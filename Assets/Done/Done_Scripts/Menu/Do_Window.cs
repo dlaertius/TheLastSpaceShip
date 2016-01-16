@@ -17,14 +17,18 @@ public class Do_Window : MonoBehaviour {
 	
 	public string nomeCapitao = "";
 	
-	public Player player;
+	//public Player player;
+
+	public UserDataMenu userData;
 	
 	private bool ativaMensagemEro = false;
 	private bool ativaMensagemErroSemToogle = false;
 	
 	void Start () {
 		
-		player = FindObjectOfType(typeof(Player)) as Player;
+		//player = FindObjectOfType(typeof(Player)) as Player;
+
+		userData = FindObjectOfType(typeof(UserDataMenu)) as UserDataMenu;
 		
 		janela = new Rect(largura - largura/1.55f, altura/2.5f + 60,300,170);
 	}
@@ -93,17 +97,22 @@ public class Do_Window : MonoBehaviour {
 			}
 
 			else if(nomeCapitao.Length > 2 && toogleAdap != false || toogleEasy != false || toogleMed != false || toogleEasy != false){
-				Debug.Log(nomeCapitao);
-				
+
 				this.ativaMensagemEro = false;
-				player.SetNomeJogador(nomeCapitao);
+
+				Debug.Log(nomeCapitao);
+		
+				userData.SetName(nomeCapitao);
+				userData.SetMode("med");
+
+				//player.SetNomeJogador(nomeCapitao);
 				
-				if(toogleAdap == true && toogleEasy == false && toogleMed == false && toogleEasy == false) player.SetGameMode("adapt");
+				/*if(toogleAdap == true && toogleEasy == false && toogleMed == false && toogleEasy == false) player.SetGameMode("adapt");
 				else if(toogleAdap == false && toogleEasy == true && toogleMed == false && toogleEasy == false) player.SetGameMode("easy");
 				else if(toogleAdap == false && toogleEasy == false && toogleMed == true && toogleEasy == false) player.SetGameMode("med");
 				else if(toogleAdap == false && toogleEasy == false && toogleMed == false && toogleEasy == true) player.SetGameMode("hard");
 				
-				Debug.Log(player.GetGameMode());
+				Debug.Log(player.GetGameMode());*/
 				
 				Application.LoadLevel(2);
 				

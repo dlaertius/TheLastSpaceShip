@@ -75,16 +75,30 @@ public class WaveController : MonoBehaviour {
 	private Done_Mover velocidadeNaveBranca;
 	private Done_WeaponController armasNaveBranca;
 	private Done_EvasiveManeuver evazaoNaveBranca;
-	
-	public Player player;
 
-	//Para poder acessar o tempo do jogo.
+	/*
+	 * This two scripts above will be used to set the difficult.
+	 * Estes dois scripts abaixo serao usados para setar as dificuldades.
+	 * 
+	 */
+
+	public Player player;
+	
 	public Done_GameController game;
 	
-	// Use this for initialization
+	/*
+	 * This script above will be used to this object (WaveController) watch a variable call playerLevel and adapt the difficult.
+	 * Este script abaixo sera usado por esse objeto (WaveController) para observar a variavel playerLevel e adaptar a dificultade.
+	 */
+
+	public Modeler modeler;
+
+
 	void Start () {
 
 		game = FindObjectOfType(typeof(Done_GameController)) as Done_GameController;
+
+		player = FindObjectOfType(typeof(Player)) as Player;
 
 		/*
 		 * Adiquirindo os script para efetuar a modificaçao por "Onda".
@@ -107,8 +121,18 @@ public class WaveController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {}
+	void Update () {
 
+		/*if(player.GetGameMode().Equals("adapt")){
+			//Adapta.
+		}*/
+	}
+
+
+	/*public string InitialStatusWave () {
+		return ;
+	}*/
+	
 	/*
 	 * Definindo asteroides e naves de acordo com o array que eu conheco no gameC.
 	 */
@@ -150,8 +174,8 @@ public class WaveController : MonoBehaviour {
 
 	//Arrumar.
 	public void InitialStatusPlayer (){
-		player.speedPlayer = 1;
-		player.fireRatePlayer = 1;
+		player.speedPlayer = 10;
+		player.fireRatePlayer = 0.3f;
 	}
 	
 	public void JogadorBonusPorOnda () {
@@ -162,27 +186,27 @@ public class WaveController : MonoBehaviour {
 	public void IncreaseElements (int wave) {
 
 		if (wave <= 4) {
-			if(player.GetGameMode().Equals("easy")) EasyModeAdd(velocidadeNaveRoxa, armasNaveRoxa, evazaoNaveRoxa);
+			if(player.GetGameMode() == "easy") EasyModeAdd(velocidadeNaveRoxa, armasNaveRoxa, evazaoNaveRoxa);
 			
-			else if(player.GetGameMode().Equals("med")) MediumModeAdd(velocidadeNaveVermelha, armasNaveVermelha, evazaoNaveVermelha);
+			else if(player.GetGameMode() == "med") MediumModeAdd(velocidadeNaveRoxa, armasNaveRoxa, evazaoNaveRoxa);
 			
-			else if(player.GetGameMode().Equals("hard")) HardModeAdd(velocidadeNaveBranca, armasNaveBranca, evazaoNaveBranca);
+			else if(player.GetGameMode() == "hard") HardModeAdd(velocidadeNaveRoxa, armasNaveRoxa, evazaoNaveRoxa);
 			
 			//else if(player.GetGameMode().Equals("adapt")) AddAdaptMode(velocidadeNaveBranca, armasNaveBranca, evazaoNaveBranca);
 		}else if (wave > 4 && wave <= 8){
-			if(player.GetGameMode().Equals("easy")) EasyModeAdd(velocidadeNaveRoxa, armasNaveRoxa, evazaoNaveRoxa);
+			if(player.GetGameMode() == "easy") EasyModeAdd(velocidadeNaveVermelha, armasNaveVermelha, evazaoNaveVermelha);
 			
-			else if(player.GetGameMode().Equals("med")) MediumModeAdd(velocidadeNaveVermelha, armasNaveVermelha, evazaoNaveVermelha);
+			else if(player.GetGameMode() == "med") MediumModeAdd(velocidadeNaveVermelha, armasNaveVermelha, evazaoNaveVermelha);
 			
-			else if(player.GetGameMode().Equals("hard")) HardModeAdd(velocidadeNaveBranca, armasNaveBranca, evazaoNaveBranca);
+			else if(player.GetGameMode() == "hard") HardModeAdd(velocidadeNaveVermelha, armasNaveVermelha, evazaoNaveVermelha);
 			
 			//else if(player.GetGameMode().Equals("adapt")) AddAdaptMode(velocidadeNaveBranca, armasNaveBranca, evazaoNaveBranca);
 		}else if(wave > 8 && wave <= 12){
-			if(player.GetGameMode().Equals("easy")) EasyModeAdd(velocidadeNaveRoxa, armasNaveRoxa, evazaoNaveRoxa);
+			if(player.GetGameMode() == "easy") EasyModeAdd(velocidadeNaveBranca, armasNaveBranca, evazaoNaveBranca);
 			
-			else if(player.GetGameMode().Equals("med")) MediumModeAdd(velocidadeNaveVermelha, armasNaveVermelha, evazaoNaveVermelha);
+			else if(player.GetGameMode() == "med") MediumModeAdd(velocidadeNaveBranca, armasNaveBranca, evazaoNaveBranca);
 			
-			else if(player.GetGameMode().Equals("hard")) HardModeAdd(velocidadeNaveBranca, armasNaveBranca, evazaoNaveBranca);
+			else if(player.GetGameMode() == "hard") HardModeAdd(velocidadeNaveBranca, armasNaveBranca, evazaoNaveBranca);
 			
 			//else if(player.GetGameMode().Equals("adapt")) AddAdaptMode(velocidadeNaveBranca, armasNaveBranca, evazaoNaveBranca);
 		}
@@ -193,11 +217,11 @@ public class WaveController : MonoBehaviour {
 	 */
 	public void IncreaseWave () {
 
-		if(player.GetGameMode().Equals("easy")) game.spawnWait -= 0.1f; // Decrementando -0.4 enquanto maior que 1.
+		if(player.GetGameMode() == "easy") game.spawnWait -= 0.1f; // Decrementando -0.4 enquanto maior que 1.
 
-		else if(player.GetGameMode().Equals("med")) game.spawnWait -= 0.2f; // Decrementando -0.4 enquanto maior que 1.
+		else if(player.GetGameMode() == "med") game.spawnWait -= 0.15f; // Decrementando -0.4 enquanto maior que 1.
 
-		else if(player.GetGameMode().Equals("hard")) game.spawnWait -= 0.4f; // Decrementando -0.4 enquanto maior que 1.
+		else if(player.GetGameMode() == "hard") game.spawnWait -= 0.2f; // Decrementando -0.4 enquanto maior que 1.
 
 		//Editar -> else if(player.GetGameMode().Equals("adapt")) game.spawnWait -= 0.4f; // Decrementando -0.4 enquanto maior que 1.
 		
@@ -216,9 +240,9 @@ public class WaveController : MonoBehaviour {
 		evazao.dodge += 0.2f;
 
 		//Ast
-		this.velocidadeAsteroide_1.speed += 0.1f;
-		this.velocidadeAsteroide_2.speed += 0.1f;
-		this.velocidadeAsteroide_3.speed += 0.1f;
+		this.velocidadeAsteroide_1.speed -= 0.1f;
+		this.velocidadeAsteroide_2.speed -= 0.1f;
+		this.velocidadeAsteroide_3.speed -= 0.1f;
 	}
 
 	void MediumMode(Done_Mover velo, Done_WeaponController armas, Done_EvasiveManeuver evazao){}
@@ -228,14 +252,14 @@ public class WaveController : MonoBehaviour {
 		//Ships
 		armas.fireRate -= 0.1f;
 		armas.delay -= 0.1f;
-		velo.speed -= 0.2f;
+		velo.speed -= 0.5f;
 		evazao.tilt += 0.3f;
 		evazao.dodge += 0.3f;
 
 		//Ast
-		this.velocidadeAsteroide_1.speed += 0.2f;
-		this.velocidadeAsteroide_2.speed += 0.2f;
-		this.velocidadeAsteroide_3.speed += 0.2f;
+		this.velocidadeAsteroide_1.speed -= 0.2f;
+		this.velocidadeAsteroide_2.speed -= 0.2f;
+		this.velocidadeAsteroide_3.speed -= 0.2f;
 	}
 
 	void HardMode(Done_Mover velo, Done_WeaponController armas, Done_EvasiveManeuver evazao){}
@@ -243,16 +267,16 @@ public class WaveController : MonoBehaviour {
 	void HardModeAdd(Done_Mover velo, Done_WeaponController armas, Done_EvasiveManeuver evazao){
 
 		//Ships
-		armas.fireRate -= 0.2f;
-		armas.delay -= 0.2f;
-		velo.speed -= 0.3f;
-		evazao.tilt += 0.5f;
-		evazao.dodge += 0.5f;
+		armas.fireRate -= 0.5f;
+		armas.delay -= 0.5f;
+		velo.speed -= 1.0f;
+		evazao.tilt += 1.0f;
+		evazao.dodge += 1.0f;
 
 		//Ast
-		this.velocidadeAsteroide_1.speed += 0.3f;
-		this.velocidadeAsteroide_2.speed += 0.3f;
-		this.velocidadeAsteroide_3.speed += 0.3f;
+		this.velocidadeAsteroide_1.speed -= 1f;
+		this.velocidadeAsteroide_2.speed -= 1f;
+		this.velocidadeAsteroide_3.speed -= 1f;
 	}
 
 	void AdaptMode (){}

@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Done_Barreira : MonoBehaviour {
-
+public class Barrier : MonoBehaviour {
+	
 	private Done_GameController gameController;
 	
 	void Start ()
@@ -18,18 +18,26 @@ public class Done_Barreira : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {}
-
-
+	
+	
 	void OnTriggerEnter (Collider other) 
 	{
 		
-		if(other.tag != "LaserInimigo" || other.tag != "Boundary" || other.tag != "GameController" || other.tag != "Player")
+		/*	Apparently this solutions worked.
+		 * Aparentemente essa soluçao funcionou.
+		 *
+		 * The other way: if(other.tag != "LaserInimigo" || other.tag != "Boundary" || other.tag != "GameController" || other.tag != "Player")
+		 * O outro jeito : if(other.tag != "LaserInimigo" || other.tag != "Boundary" || other.tag != "GameController" || other.tag != "Player")
+		 */
+		if(other.tag == "Enemy" || other.tag == "Asteroide")
 		{
+			//Debug.Log("PASSOU");
+			
 			gameController.elementosQueCruzaramAFronteira++;
 			
-			Debug.Log("Cruzou a fronteira! n: " + gameController.elementosQueCruzaramAFronteira);
+			Debug.LogError("Cruzou a fronteira! n: " + gameController.elementosQueCruzaramAFronteira);
 		}
-
+		
 		Destroy(other.gameObject);
 	}
 }

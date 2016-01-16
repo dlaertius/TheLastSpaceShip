@@ -5,7 +5,7 @@ public class Player : MonoBehaviour {
 	
 	private string nomeJogador;
 
-	private string mode;
+	private string mode; //= "hard"
 	
 	//Quanto de vida o jogador tem;
 	private int life = 100;
@@ -22,15 +22,21 @@ public class Player : MonoBehaviour {
 
 	public float speedPlayer;
 	public float fireRatePlayer;
+	public float tiltPlayer;
 	
 	public float tempoDoUltimoDisparo = 0;
 	//Capturando intensa movimentaçao do jogador.
 	public int quantidadeDeMovimentos = 0;
 
 	public Done_GameController game;
-	
+
+	public UserDataMenu userData;
+
 	void Awake () {
-		DontDestroyOnLoad(this);
+		userData = FindObjectOfType(typeof(UserDataMenu)) as UserDataMenu;
+		SetPlayerName();
+		SetGameMode();
+		userData.DestroyUserDataMenu();
 	}
 	
 	// Use this for initialization
@@ -41,32 +47,22 @@ public class Player : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
-	}
+	void Update () {}
 	
 	public void DestruirObjetoJogador () {
-		Destroy(gameObject);
-	}
-	
-	public void SetNomeJogador (string nome) {
-		this.nomeJogador = nome;
-	}
-	public void SetGameMode (string mode) {
-		this.mode = mode;
-	}
-	
-	public string GetNomeJogador () {
-		return nomeJogador;
-	}
-	public string GetGameMode () {
-		return mode;
+		Destroy(this);
 	}
 
-	public int GetVidaJogador(){
-		return this.life;
+	public string DadosToString () {
+		return "Tiros: " + this.tirosDisparados + " Maior Delay: " + this.maiorDelay + " Energia: " + this.life;
 	}
 	
+	public void EstadoInicial () {
+		this.speedPlayer = 10;
+		this.fireRatePlayer = 0.3f;
+		this.tiltPlayer = 4;
+	}
+
 	public void DanoRecebido(int dano){
 		if(this.life - dano <= 0)
 			this.life = 0;
@@ -81,23 +77,38 @@ public class Player : MonoBehaviour {
 		}
 	}
 	
-	public string DadosToString () {
-		return "Tiros: " + this.tirosDisparados + " Maior Delay: " + this.maiorDelay + " Energia: " + this.life;
-	}
-	
-	public string[] DadosJogador () {
-		string[] arrayDados = new string[3];
-		arrayDados[0] = this.tirosDisparados.ToString();
-		arrayDados[1] = this.maiorDelay.ToString();
-		arrayDados[2] = this.life.ToString();
-		return arrayDados;
+	public void CalculaDelays(float tempo) {
+		
+		float delayTemp = tempo - this.tempoDoUltimoDisparo;
+		
+		if (delayTemp >= 3f) //3 representa o tempo necessario pra ser considerado delay.
+		{
+			somaDosDelays += delayTemp;
+			
+			quantidadeDeDelays++;
+		}
 	}
 
-	public void EstadoInicial () {
-		this.speedPlayer = 10;
-		this.fireRatePlayer = 0.3f;
+	public void SetPlayerName () {
+		this.nomeJogador = userData.GetName();
+	}
+	public void SetGameMode () {
+		this.mode = userData.GetMode();
 	}
 	
+	public string GetNomeJogador () {
+		//SetPlayerName();
+		return nomeJogador;
+	}
+	public string GetGameMode () {
+		//SetGameMode();
+		return mode;
+	}
+
+	public int GetVidaJogador(){
+		return this.life;
+	}
+
 	public float GetDelay () {
 		return this.maiorDelay;
 	}
@@ -113,17 +124,10 @@ public class Player : MonoBehaviour {
 	public int GetQuantidadeMovimentos () {
 		return this.quantidadeDeMovimentos;
 	}
-	
-	public void CalculaDelays(float tempo) {
-		
-		float delayTemp = tempo - this.tempoDoUltimoDisparo;
-		
-		if (delayTemp >= 3f) //3 representa o tempo necessario pra ser considerado delay.
-		{
-			somaDosDelays += delayTemp;
-			
-			quantidadeDeDelays++;
-		}
+
+	public string InitialStatusPlayerDebug(){
+		return GetGameMode() + " - " + GetNomeJogador() + "-" + GetQuantidadeMovimentos() + " - " 
+			+ GetTirosLevados() + "-" + GetVidaJogador();
 	}
 
 	public double CalculaTaxaGenerica (int v1, int v2) 
@@ -187,5 +191,11 @@ public class Player : MonoBehaviour {
 		return (CalculaTaxaGenerica(GetTirosLevados(), game.tirosDisparadosNaves));
 	}
 
+	public double[] PlayerStatus(){
+
+		double[] playerStatistics = {MediaDelaysJogador(), MediaTirosLevados(), MediaCampanha100Kill(), MediaCampanhaMovimentoPorSegundo()};
+		Debug.Log (playerStatistics);
+		return playerStatistics;
+	}
 }
 

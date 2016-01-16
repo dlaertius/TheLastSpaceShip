@@ -50,6 +50,11 @@ public class Done_GameController : MonoBehaviour{
 	 */
 	public int navesTotais = 0;
 	public int asteroidesTotais = 0;
+	
+	/*
+	 * Tiros Disparados Naves.
+	 */
+	public int tirosDisparadosNaves;
 
 	/*
 	 * Usado para calculo da TAXA DE COLISAO COM NAVES.
@@ -82,11 +87,6 @@ public class Done_GameController : MonoBehaviour{
 	public bool todosPassaram = true;
 
 	/*
-	 * Mesclando o jogador para poder acessar e modificar dinamicamente seus dados.
-	 */
-	public Done_PlayerController jogador;
-
-	/*
 	 * Para armazenar o nome do capitao da nave colhida na janela inicial.
 	 */
 	public Player player;
@@ -98,14 +98,9 @@ public class Done_GameController : MonoBehaviour{
 
 	public WaveController waveController;
 
-	/*
-	 * Tiros Disparados Naves.
-	 */
-	public int tirosDisparadosNaves;
-
 	void Start (){
 
-		player = FindObjectOfType(typeof(Player)) as Player;
+		player = FindObjectOfType(typeof(Player)) as Player; //Porque usar ele?
 
 		coletor.gameObject.GetComponent<Coletor>();
 
@@ -149,7 +144,7 @@ public class Done_GameController : MonoBehaviour{
 		
 	void OnGUI () {
 		if(gameOver != true){
-			if(GUI.Button(new Rect(10, 170, 80, 25), "Menu")){
+			if(GUI.Button(new Rect(10, 110, 80, 25), "Menu")){
 				Application.LoadLevel(1);
 			}
 		}
@@ -161,6 +156,10 @@ public class Done_GameController : MonoBehaviour{
 	 */
 
 	IEnumerator SpawnWaves (){
+
+		DebugCheckUpInitial();
+
+		Debug.Log(player.GetNomeJogador() + '-' + player.GetGameMode());
 		
 		yield return new WaitForSeconds (startWait);
 		
@@ -254,13 +253,20 @@ public class Done_GameController : MonoBehaviour{
 
 				Onda100KillConfirma();
 				
-				waveController.IncreaseWave(); //Passando wave 1 mas depois tem que consertar.
+				waveController.IncreaseWave();
 					
 				waveController.IncreaseElements(this.numeroDaOnda);
 
-				//coletor.SaveToFile(OrganizadorDeDados()); // Salvando dados por onda.
+				foreach(double element in GameStatus()){
+					Debug.Log(element);
+				}
 
-				//Debug.Log(DebugOrganizador());
+				Debug.Log(player.MediaDelaysJogador());
+				Debug.Log(player.MediaTirosLevados());
+				Debug.Log(player.MediaCampanha100Kill());
+				Debug.Log(player.MediaCampanhaMovimentoPorSegundo());
+
+				Debug.Log(OrganizadorDeDados());
 			}
 			
 			// CASO A ENERGIA ACABE.
@@ -339,23 +345,22 @@ public class Done_GameController : MonoBehaviour{
 		return "0" + horas + ":" + minutos + ":" + segundos;	
 	}
 
-	/*public string OrganizadorDeDados () 
+	public double[] GameStatus(){
+		double[] gameStatusPlayer = {player.CalculaTaxaGenerica(this.totalDeNavesDestruidas,this.navesTotais), 
+			player.CalculaTaxaGenerica(this.totalDeAsteroidesDestruidos, this.asteroidesTotais),
+			player.CalculaTaxaGenerica(this.navesColididas,this.navesTotais),player.CalculaTaxaGenerica(this.asteroidesColididos, this.asteroidesTotais),
+			player.MediaDelaysJogador(),player.MediaTirosLevados(),player.MediaCampanha100Kill(),player.MediaCampanhaMovimentoPorSegundo()};
+
+		return gameStatusPlayer;
+	}
+	
+	public string OrganizadorDeDados () 
 	{
 		return (this.numeroDaOnda + "," + player.CalculaTaxaGenerica(this.totalDeNavesDestruidas,this.navesTotais) + ","
 		        + player.CalculaTaxaGenerica(this.totalDeAsteroidesDestruidos, this.asteroidesTotais) + "," + 
 		        player.CalculaTaxaGenerica(this.navesColididas,this.navesTotais) + "," + player.CalculaTaxaGenerica(this.asteroidesColididos, this.asteroidesTotais)
-		        + "," + MediaDelaysJogador() + "," + MediaTirosLevados() + "," + MediaCampanha100Kill() + "," + MediaCampanhaMovimentoPorSegundo() + "," + this.player.GetNomeJogador());
+		        + "," + player.MediaDelaysJogador() + "," + player.MediaTirosLevados() + "," + player.MediaCampanha100Kill() + "," + player.MediaCampanhaMovimentoPorSegundo() + "," + this.player.GetNomeJogador());
 	}
-
-	public string DebugOrganizador () 
-	{
-		//Debug.Log(this.jogador.somaDosDelays + " : " + this.jogador.quantidadeDeDelays);
-
-		return ("Numer da Onda: " + this.numeroDaOnda + ", TaxaAcertoNave: " + player.CalculaTaxaGenerica(this.totalDeNavesDestruidas,this.navesTotais) + ", TaxaAcertoAsteroide: "
-		        + player.CalculaTaxaGenerica(this.totalDeAsteroidesDestruidos, this.asteroidesTotais) + ", TaxaColisaoNaves: " + 
-		        player.CalculaTaxaGenerica(this.navesColididas,this.navesTotais) + ", TavaColisaoAsteroides: " + player.CalculaTaxaGenerica(this.asteroidesColididos, this.asteroidesTotais)
-		        + ", MediaDelayJogador: " + MediaDelaysJogador() + ", TirosLevadosMedia: " + MediaTirosLevados() + ", Campanhas100%kill: " + MediaCampanha100Kill() + ", QuantidadeMovimentos/s: " + MediaCampanhaMovimentoPorSegundo());
-	}*/
 
 	public float GetVida_Jogador(){
 		return player.GetVidaJogador();
@@ -376,7 +381,6 @@ public class Done_GameController : MonoBehaviour{
 
 		return taxaDeAcerto;
 	}
-
 	/*
 	 * Tornando o dano dinamico pela onda.
 	 */
@@ -418,8 +422,12 @@ public class Done_GameController : MonoBehaviour{
 		scoreText.text = "Score: " + score + "\n" + "Energy: " + player.GetVidaJogador() + "%" + "\n" 
 			+ "Time: " + Temporizador(tempoTotal) + 
 				/*"\n" + "Elementos: " + this.elementosShow +*/ "\n" +
-				"Capitan " + player.GetNomeJogador()/* + "\n" +
-				"Estagio: " + this.numeroDoEstagio + "\n" + "Onda: " + this.ondaShow*/;
+				"Capitan " + player.GetNomeJogador() + "\n" +
+				"Wave " + this.numeroDaOnda;
+	}
+
+	void DebugCheckUpInitial(){
+		Debug.Log("Player: " + player.InitialStatusPlayerDebug());
 	}
 	
 	/*

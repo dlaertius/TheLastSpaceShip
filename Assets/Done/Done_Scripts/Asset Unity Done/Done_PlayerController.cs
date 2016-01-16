@@ -18,12 +18,24 @@ public class Done_PlayerController : MonoBehaviour
 	public float fireRate;
 	private float nextFire;
 
-	//Para poder acessar o tempo do jogo.
+	/*
+	 * This two scripts above will be used to acess their objects in scene, getting some variables necessary.
+	 * Os dois scripts abaixo serao usados para acessar seus objetos em cena, adquirindo algumas variaveis necessarias.
+	 *
+	 */
+
 	public Done_GameController gameControle;
 
 	public Player player;
 
 	void Update (){
+
+		/*
+		 * In a case of a continuous change the state of the ship.
+		 * No caso de uma mudanca contiuna do estado da nave.
+		 */
+
+		StatusShip();
 
 		if (Input.GetKeyDown("space") && Time.time > nextFire) {
 
@@ -41,12 +53,22 @@ public class Done_PlayerController : MonoBehaviour
 
 			}else if (gameControle.contaDelay == false)
 			{
-				player.VerificaMaiorDelay(gameControle.GetTempoTotal());
 
+				/* Used to verify the bigger delay.
+				 * Usado para verificar qual o maior delay do jogador.
+				 */
+				player.VerificaMaiorDelay(gameControle.GetTempoTotal());
+				
+				/* Used to calculate IF fire rate time was > 3 seconds, so it's a delay.
+				 * Usado para calcular se o tempo de tiro foi > 3 segundos, entao e um delay.
+				 */
 				player.CalculaDelays(gameControle.GetTempoTotal());
 
+				/* Used to controll this time - the new time when the player shot.
+				 * Usado para controlar o tempo dos delays, uma vez que quando o jogador atirar e so subtrair pelo anterior.
+				 */
 				player.tempoDoUltimoDisparo = gameControle.GetTempoTotal();
-				//Debug.Log("Maior Delay: " + this.maiorDelay);
+
 			}
 		}
 
@@ -74,5 +96,11 @@ public class Done_PlayerController : MonoBehaviour
 		);
 		
 		GetComponent<Rigidbody>().rotation = Quaternion.Euler (0.0f, 0.0f, GetComponent<Rigidbody>().velocity.x * -tilt);
+	}
+
+	void StatusShip(){
+		this.speed = player.speedPlayer;
+		this.fireRate = player.fireRatePlayer;
+		this.tilt = player.tiltPlayer;
 	}
 }
