@@ -16,8 +16,6 @@ public class Do_Window : MonoBehaviour {
 	private bool toogleHard = false;
 	
 	public string nomeCapitao = "";
-	
-	//public Player player;
 
 	public UserDataMenu userData;
 	
@@ -25,8 +23,6 @@ public class Do_Window : MonoBehaviour {
 	private bool ativaMensagemErroSemToogle = false;
 	
 	void Start () {
-		
-		//player = FindObjectOfType(typeof(Player)) as Player;
 
 		userData = FindObjectOfType(typeof(UserDataMenu)) as UserDataMenu;
 		
@@ -37,6 +33,8 @@ public class Do_Window : MonoBehaviour {
 		if(habilitar){
 			janela = GUI.Window(0, janela,DoMyWindow, "Capitan's Name");
 		}
+
+		//Debug.Log("T. Eas: " + this.toogleEasy + ", T.Med: " + this.toogleMed + ", T.Hard: " + this.toogleHard + ", T.Adapt: " + this.toogleAdap);
 	}
 	
 	void DoMyWindow (int windowID){
@@ -44,11 +42,11 @@ public class Do_Window : MonoBehaviour {
 		nomeCapitao = GUI.TextField(new Rect(60,35, 200, 30),nomeCapitao,10);
 		
 		if (ativaMensagemEro) {
-			GUI.Label(new Rect(60,135,220,30), "Digite um nome de capitão válido!");
+			GUI.Label(new Rect(60,135,220,30), "Input a capitan's name valid!");
 		}
 		
 		if(ativaMensagemErroSemToogle){
-			GUI.Label(new Rect(60,135,220,30), "Escolha um nivel de dificuldade!");
+			GUI.Label(new Rect(60,135,220,30), "Choose a difficulty level!");
 		}
 		
 		toogleEasy = GUI.Toggle(new Rect(30,70, 100, 30), toogleEasy, "Easy");
@@ -62,7 +60,6 @@ public class Do_Window : MonoBehaviour {
 			toogleEasy = false;
 			toogleMed = false;
 			toogleHard = false;
-			//Debug.Log(toogleAdap + ", " + tooglePadrao);
 		}
 		
 		if(toogleEasy)
@@ -70,7 +67,6 @@ public class Do_Window : MonoBehaviour {
 			toogleAdap = false;
 			toogleMed = false;
 			toogleHard = false;
-			//Debug.Log(toogleAdap+ ", " +tooglePadrao);
 		}
 		
 		if(toogleMed)
@@ -96,28 +92,27 @@ public class Do_Window : MonoBehaviour {
 				this.ativaMensagemErroSemToogle = false; //Para nao dar conflito quando aparecer os dois erros.
 			}
 
-			else if(nomeCapitao.Length > 2 && toogleAdap != false || toogleEasy != false || toogleMed != false || toogleEasy != false){
+			else if(nomeCapitao.Length > 2 && toogleAdap != false || toogleEasy != false || toogleMed != false || toogleHard != false){
 
 				this.ativaMensagemEro = false;
 
 				Debug.Log(nomeCapitao);
 		
 				userData.SetName(nomeCapitao);
-				userData.SetMode("med");
-
-				//player.SetNomeJogador(nomeCapitao);
 				
-				/*if(toogleAdap == true && toogleEasy == false && toogleMed == false && toogleEasy == false) player.SetGameMode("adapt");
-				else if(toogleAdap == false && toogleEasy == true && toogleMed == false && toogleEasy == false) player.SetGameMode("easy");
-				else if(toogleAdap == false && toogleEasy == false && toogleMed == true && toogleEasy == false) player.SetGameMode("med");
-				else if(toogleAdap == false && toogleEasy == false && toogleMed == false && toogleEasy == true) player.SetGameMode("hard");
+				if(toogleAdap == true && toogleEasy == false && toogleMed == false && toogleHard == false) userData.SetMode("adapt");
+				else if(toogleAdap == false && toogleEasy == true && toogleMed == false && toogleHard == false) userData.SetMode("easy");
+				else if(toogleAdap == false && toogleEasy == false && toogleMed == true && toogleHard == false) userData.SetMode("med");
+				else if(toogleAdap == false && toogleEasy == false && toogleMed == false && toogleHard == true) userData.SetMode("hard");
 				
-				Debug.Log(player.GetGameMode());*/
+				Debug.Log(userData.GetMode());
 				
 				Application.LoadLevel(2);
 				
-			}else if (toogleAdap == false && toogleEasy == false && toogleMed == false && toogleEasy == false){
+			}else if (toogleAdap == false && toogleEasy == false && toogleMed == false && toogleHard == false){
+
 				this.ativaMensagemErroSemToogle = true;
+
 				this.ativaMensagemEro = false;	//Para nao dar conflito quando aparecer os dois erros.
 			}
 		}
