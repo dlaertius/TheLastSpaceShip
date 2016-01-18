@@ -100,6 +100,8 @@ public class WaveController : MonoBehaviour {
 
 		player = FindObjectOfType(typeof(Player)) as Player;
 
+		modeler = FindObjectOfType(typeof(Modeler)) as Modeler;
+
 		/*
 		 * Adiquirindo os script para efetuar a modificaçao por "Onda".
 		 */
@@ -128,11 +130,6 @@ public class WaveController : MonoBehaviour {
 		}*/
 	}
 
-
-	/*public string InitialStatusWave () {
-		return ;
-	}*/
-	
 	/*
 	 * Definindo asteroides e naves de acordo com o array que eu conheco no gameC.
 	 */
@@ -192,7 +189,8 @@ public class WaveController : MonoBehaviour {
 			
 			else if(player.GetGameMode() == "hard") HardModeAdd(velocidadeNaveRoxa, armasNaveRoxa, evazaoNaveRoxa);
 			
-			//else if(player.GetGameMode().Equals("adapt")) AddAdaptMode(velocidadeNaveBranca, armasNaveBranca, evazaoNaveBranca);
+			else if(player.GetGameMode().Equals("adapt")) AdaptModeAdd(velocidadeNaveRoxa, armasNaveRoxa, evazaoNaveRoxa);
+
 		}else if (wave > 4 && wave <= 8){
 			if(player.GetGameMode() == "easy") EasyModeAdd(velocidadeNaveVermelha, armasNaveVermelha, evazaoNaveVermelha);
 			
@@ -200,7 +198,8 @@ public class WaveController : MonoBehaviour {
 			
 			else if(player.GetGameMode() == "hard") HardModeAdd(velocidadeNaveVermelha, armasNaveVermelha, evazaoNaveVermelha);
 			
-			//else if(player.GetGameMode().Equals("adapt")) AddAdaptMode(velocidadeNaveBranca, armasNaveBranca, evazaoNaveBranca);
+			else if(player.GetGameMode().Equals("adapt")) AdaptModeAdd(velocidadeNaveVermelha, armasNaveVermelha, evazaoNaveVermelha);
+
 		}else if(wave > 8 && wave <= 12){
 			if(player.GetGameMode() == "easy") EasyModeAdd(velocidadeNaveBranca, armasNaveBranca, evazaoNaveBranca);
 			
@@ -208,7 +207,7 @@ public class WaveController : MonoBehaviour {
 			
 			else if(player.GetGameMode() == "hard") HardModeAdd(velocidadeNaveBranca, armasNaveBranca, evazaoNaveBranca);
 			
-			//else if(player.GetGameMode().Equals("adapt")) AddAdaptMode(velocidadeNaveBranca, armasNaveBranca, evazaoNaveBranca);
+			else if(player.GetGameMode().Equals("adapt")) AdaptModeAdd(velocidadeNaveBranca, armasNaveBranca, evazaoNaveBranca);
 		}
 	}
 
@@ -223,7 +222,7 @@ public class WaveController : MonoBehaviour {
 
 		else if(player.GetGameMode() == "hard") game.spawnWait -= 0.2f; // Decrementando -0.4 enquanto maior que 1.
 
-		//Editar -> else if(player.GetGameMode().Equals("adapt")) game.spawnWait -= 0.4f; // Decrementando -0.4 enquanto maior que 1.
+		else if(player.GetGameMode().Equals("adapt")) game.spawnWait -= 0.4f; // Decrementando -0.4 enquanto maior que 1.
 		
 		game.hazardCount += 5; // Aumetnando o numero de mobs por onda.
 	}
@@ -279,7 +278,26 @@ public class WaveController : MonoBehaviour {
 		this.velocidadeAsteroide_3.speed -= 1f;
 	}
 
-	void AdaptMode (){}
+	void AdaptMode (Done_Mover velo, Done_WeaponController armas, Done_EvasiveManeuver evazao){}
 
-	void AddAdaptMode (){}
+	/*
+	 * If the user was classify with amateur, the game will add easy level features, and ..
+	 * Se o usuario for classificadao como amador, o jogo ira adicionar caracteristicas de nivel facil, e ..
+	 * 
+	 */
+	void AdaptModeAdd (Done_Mover velo, Done_WeaponController armas, Done_EvasiveManeuver evazao){
+
+		if(modeler.GetPlayerType() == "amateur"){
+			EasyModeAdd(velo, armas, evazao);
+			Debug.Log("Amateur");
+
+		}else if (modeler.GetPlayerType() == "intermediate"){
+			MediumModeAdd(velo,armas,evazao);
+			Debug.Log("Intermediate");
+
+		}else if (modeler.GetPlayerType() == "hardcore"){
+			HardModeAdd(velo,armas,evazao);
+			Debug.Log("Hardcore");
+		}
+	}
 }

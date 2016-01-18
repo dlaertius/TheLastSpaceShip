@@ -252,6 +252,9 @@ public class Done_GameController : MonoBehaviour{
 				this.numeroDaOndaParaMedia = this.numeroDaOnda;
 
 				Onda100KillConfirma();
+
+				this.numeroDaOnda++;
+				Debug.Log("Numero da onda: " + this.numeroDaOnda);
 				
 				waveController.IncreaseWave();
 					
@@ -284,8 +287,6 @@ public class Done_GameController : MonoBehaviour{
 
 				break;
 			}
-
-			this.numeroDaOnda++;
 		}
 	}
 
@@ -345,14 +346,27 @@ public class Done_GameController : MonoBehaviour{
 		return "0" + horas + ":" + minutos + ":" + segundos;	
 	}
 
-	public double[] GameStatus(){
+	/*public double[] GameStatus(){
 		double[] gameStatusPlayer = {player.CalculaTaxaGenerica(this.totalDeNavesDestruidas,this.navesTotais), 
 			player.CalculaTaxaGenerica(this.totalDeAsteroidesDestruidos, this.asteroidesTotais),
 			player.CalculaTaxaGenerica(this.navesColididas,this.navesTotais),player.CalculaTaxaGenerica(this.asteroidesColididos, this.asteroidesTotais),
 			player.MediaDelaysJogador(),player.MediaTirosLevados(),player.MediaCampanha100Kill(),player.MediaCampanhaMovimentoPorSegundo()};
 
 		return gameStatusPlayer;
+	}*/
+
+	/*
+	 * This original version used double values.
+	 * A versao original usou valores double.
+	 */
+	public float[] GameStatus(){
+		float[] gameStatusPlayer = {player.CalculaTaxaGenerica(this.totalDeNavesDestruidas,this.navesTotais), 
+			player.CalculaTaxaGenerica(this.totalDeAsteroidesDestruidos, this.asteroidesTotais),
+			player.CalculaTaxaGenerica(this.navesColididas,this.navesTotais),player.CalculaTaxaGenerica(this.asteroidesColididos, this.asteroidesTotais)};
+		
+		return gameStatusPlayer;
 	}
+
 	
 	public string OrganizadorDeDados () 
 	{

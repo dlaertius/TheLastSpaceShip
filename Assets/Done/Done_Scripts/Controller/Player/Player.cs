@@ -124,45 +124,55 @@ public class Player : MonoBehaviour {
 	public int GetQuantidadeMovimentos () {
 		return this.quantidadeDeMovimentos;
 	}
+	
+	/*
+	 * Use to show with all initial player status is ok.
+	 * Usado apra mostrar se todos os status iniciais do jogador estao ok.
+	 */
 
 	public string InitialStatusPlayerDebug(){
 		return GetGameMode() + " - " + GetNomeJogador() + "-" + GetQuantidadeMovimentos() + " - " 
 			+ GetTirosLevados() + "-" + GetVidaJogador();
 	}
 
-	public double CalculaTaxaGenerica (int v1, int v2) 
+	/*
+	 * This original version used double values, but we take only two digits after comma, using a float will be better.
+	 * A versao original usou valores double, porem nos so pegamos dois digitos apos a virgula, usando um float estaria melhor.
+	 */
+
+	public float CalculaTaxaGenerica (int v1, int v2) 
 	{
-		double taxa;
+		float taxa;
 		
 		if(v1 != 0 && v2 != 0){
-			taxa = ((double) v1)/((double) (v2));
-			taxa = System.Math.Round(taxa, 2); //Pegando apenas dois digitos apos o "0.".
+			taxa = ((float) v1)/((float) (v2));
+			taxa = (float) System.Math.Round(taxa, 2); //Pegando apenas dois digitos apos o "0.".
 		}else{
-			taxa = 0.0;
+			taxa = 0.0f;
 		}
 		
 		return taxa;
 	}
 	
-	public double CalculaTaxaGenericaFloat (float v1, int v2) 
+	public float CalculaTaxaGenericaFloat (float v1, int v2) 
 	{
-		double taxa;
+		float taxa;
 		
 		if(v1 != 0.0f && v2 != 0){
-			taxa = ((double) v1)/((double) (v2));
-			taxa = System.Math.Round(taxa, 2); //Pegando apenas dois digitos apos o "0.".
+			taxa = ((float) v1)/((float) (v2));
+			taxa = (float) System.Math.Round(taxa, 2); //Pegando apenas dois digitos apos o "0.".
 		}else{
-			taxa = 0.0;
+			taxa = 0.0f;
 		}
 		
 		return taxa;
 	}
 
-	public double MediaDelaysJogador () 
+	public float MediaDelaysJogador () 
 	{
 		if(this.tirosDisparados < 2)
 		{
-			return (-1); //Não efetuou nenhum tiro.
+			return (-1.0f); //Não efetuou nenhum tiro.
 		}
 		else return (CalculaTaxaGenericaFloat(this.somaDosDelays, this.quantidadeDeDelays));
 	}
@@ -170,7 +180,7 @@ public class Player : MonoBehaviour {
 	/*
 	 * Usada para tirar uma media das ondas que foram 100% kill com todas as ondas passsadas. 
 	 */
-	public double MediaCampanha100Kill () 
+	public float MediaCampanha100Kill () 
 	{
 		return (CalculaTaxaGenerica(game.onda100Kill, game.numeroDaOndaParaMedia));
 	}
@@ -178,7 +188,7 @@ public class Player : MonoBehaviour {
 	/*
 	 * Usada para tirar uma media dos movimentos/segundo do jogador.
 	 */
-	public double MediaCampanhaMovimentoPorSegundo () 
+	public float MediaCampanhaMovimentoPorSegundo () 
 	{
 		return (CalculaTaxaGenerica(this.GetQuantidadeMovimentos(), game.tempoTotal));
 	}
@@ -186,14 +196,14 @@ public class Player : MonoBehaviour {
 	/*
 	 * Usada para tirar uma media dos tiros levados (jogador), pelos disparados totais pelas naves.
 	 */
-	public double MediaTirosLevados () 
+	public float MediaTirosLevados () 
 	{
 		return (CalculaTaxaGenerica(GetTirosLevados(), game.tirosDisparadosNaves));
 	}
 
-	public double[] PlayerStatus(){
+	public float[] PlayerStatus(){
 
-		double[] playerStatistics = {MediaDelaysJogador(), MediaTirosLevados(), MediaCampanha100Kill(), MediaCampanhaMovimentoPorSegundo()};
+		float[] playerStatistics = {MediaDelaysJogador(), MediaTirosLevados(), MediaCampanha100Kill(), MediaCampanhaMovimentoPorSegundo()};
 		Debug.Log (playerStatistics);
 		return playerStatistics;
 	}
