@@ -60,6 +60,7 @@
      <Compile Include="Assets\Done\Done_Scripts\Asset Unity Done\Done_WeaponController.cs" />
      <Compile Include="Assets\Done\Done_Scripts\Coletor.cs" />
      <Compile Include="Assets\Done\Done_Scripts\Controller\Barrier\Barrier.cs" />
+     <Compile Include="Assets\Done\Done_Scripts\Controller\Data\Database.cs" />
      <Compile Include="Assets\Done\Done_Scripts\Controller\Modeler\Modeler.cs" />
      <Compile Include="Assets\Done\Done_Scripts\Controller\Player\Player.cs" />
      <Compile Include="Assets\Done\Done_Scripts\Controller\Wave\WaveController.cs" />
@@ -68,6 +69,18 @@
      <Compile Include="Assets\Done\Done_Scripts\Menu\UserDataMenu.cs" />
      <Compile Include="Assets\Presentation\LogosSlideshow\Scripts\GUI\SlideShow.cs" />
      <Compile Include="Assets\Presentation\LogosSlideshow\Scripts\GUI\TextureFullScreen.cs" />
+     <None Include="Assets\Done\Resource\wave_6_classified.txt" />
+     <None Include="Assets\Done\Resource\wave_3_classified.txt" />
+     <None Include="Assets\Done\Resource\wave_2_classified.txt" />
+     <None Include="Assets\Done\Resource\wave_9_classified.txt" />
+     <None Include="Assets\Done\Resource\wave_1_classified.txt" />
+     <None Include="Assets\Done\Resource\wave_12_classified.txt" />
+     <None Include="Assets\Done\Resource\wave_11_classified.txt" />
+     <None Include="Assets\Done\Resource\wave_5_classified.txt" />
+     <None Include="Assets\Done\Resource\wave_8_classified.txt" />
+     <None Include="Assets\Done\Resource\wave_7_classified.txt" />
+     <None Include="Assets\Done\Resource\wave_10_classified.txt" />
+     <None Include="Assets\Done\Resource\wave_4_classified.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity5/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

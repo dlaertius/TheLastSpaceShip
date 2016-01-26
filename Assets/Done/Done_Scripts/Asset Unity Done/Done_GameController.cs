@@ -254,13 +254,13 @@ public class Done_GameController : MonoBehaviour{
 				Onda100KillConfirma();
 
 				this.numeroDaOnda++;
-				Debug.Log("Numero da onda: " + this.numeroDaOnda);
+				//Debug.Log("Numero da onda: " + this.numeroDaOnda);
 				
 				waveController.IncreaseWave();
 					
 				waveController.IncreaseElements(this.numeroDaOnda);
 
-				foreach(double element in GameStatus()){
+				foreach(float element in GameStatus()){
 					Debug.Log(element);
 				}
 

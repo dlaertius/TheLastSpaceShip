@@ -36,7 +36,7 @@ public class Modeler : MonoBehaviour {
 
 		if(waveNumberTrigger != game.numeroDaOnda) {
 
-			Debug.Log("ENTROU AQUI!");
+			Debug.Log("Trigger used for Modeler.cs linha 30 to watch the waves alteration.");
 
 			waveNumberTrigger = game.numeroDaOnda;
 			//trigger to calculate player level reccomender.
