@@ -13,9 +13,11 @@ using System.Collections;
 public class Modeler : MonoBehaviour {
 
 	public Done_GameController game;
-	public int waveNumberTrigger = 0;
-
 	public Player player;
+	public Database data;
+	
+	private int waveNumberTrigger = 0;
+
 
 	/*
 	 * Types: amateur, intermediate, hardcore.

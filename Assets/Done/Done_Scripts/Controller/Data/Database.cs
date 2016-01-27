@@ -108,17 +108,13 @@ public class Database : MonoBehaviour {
 
 		Cell generic;
 
-		//string[] lines = System.IO.File.ReadAllLines(localFile); // localfile = "base/base.txt";
-
-		//foreach (string line in localFile) {
-
 		string[] textInFile = waveTextFile.text.Split("\n"[0]);
 
 		foreach (string line in textInFile)
 		{
 
-			Debug.Log(line);
-			/*
+			//Debug.Log("Line: " + line);
+
 			string[] broke_string = line.Split(',');
 
 			generic = new Cell(float.Parse(broke_string[0], CultureInfo.InvariantCulture.NumberFormat),
@@ -130,10 +126,9 @@ public class Database : MonoBehaviour {
 			                   float.Parse(broke_string[6], CultureInfo.InvariantCulture.NumberFormat),
 			                   int.Parse(broke_string[7]));
 
+			//Debug.Log("Cell :" + generic.ToStringCellValues());
 
-			list.Add(generic);*/
-
-			//Debug.Log(line);
+			list.Add(generic);
 		}
 	}
 
@@ -155,13 +150,17 @@ public class Database : MonoBehaviour {
 		wave_12_cell_list = new List<Cell>();
 
 		Loading(wave_1_cell_list, wave_1);
+		Loading(wave_2_cell_list, wave_2);
+		Loading(wave_3_cell_list, wave_3);
+		Loading(wave_4_cell_list, wave_4);
+		Loading(wave_5_cell_list, wave_5);
+		Loading(wave_6_cell_list, wave_6);
+		Loading(wave_7_cell_list, wave_7);
+		Loading(wave_8_cell_list, wave_8);
+		Loading(wave_9_cell_list, wave_9);
+		Loading(wave_10_cell_list, wave_10);
+		Loading(wave_11_cell_list, wave_11);
+		Loading(wave_12_cell_list, wave_12);
 
-		/*Debug.Log ("AQUI OOOh!: ");
-
-		Debug.Log(wave_1_cell_list[0].ToStringCellValues());
-		Debug.Log(wave_1_cell_list[1].ToStringCellValues());
-		Debug.Log(wave_1_cell_list[2].ToStringCellValues());
-
-		*/
 	}
 }
