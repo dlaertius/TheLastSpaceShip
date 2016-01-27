@@ -103,6 +103,8 @@ public class Database : MonoBehaviour {
 	public List<Cell> wave_11_cell_list;
 	public List<Cell> wave_12_cell_list;
 
+    
+
 	void Loading (List<Cell> list, TextAsset waveTextFile) //, string localFile)
 	{
 

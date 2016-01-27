@@ -9,6 +9,7 @@
 using UnityEngine;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Modeler : MonoBehaviour {
 
@@ -18,6 +19,13 @@ public class Modeler : MonoBehaviour {
 	
 	private int waveNumberTrigger = 0;
 
+    private string playerLevelModeler;
+
+    /*
+    * Used to save the knn distance for each cell comparated with players data.
+    */
+   
+    private Dictionary<float, Database.Cell> knnDic = new Dictionary<float, Database.Cell>();
 
 	/*
 	 * Types: amateur, intermediate, hardcore.
@@ -28,9 +36,11 @@ public class Modeler : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
-		this.waveNumberTrigger = game.numeroDaOnda;
+        
+        this.playerLevelModeler = "none";
 
+        this.waveNumberTrigger = game.numeroDaOnda;
+   
 	}
 	
 	// Update is called once per frame
@@ -40,8 +50,10 @@ public class Modeler : MonoBehaviour {
 
 			Debug.Log("Trigger used for Modeler.cs linha 30 to watch the waves alteration.");
 
-			waveNumberTrigger = game.numeroDaOnda;
-			//trigger to calculate player level reccomender.
+            KNN(); //trigger to calculate player level reccomender.
+
+            waveNumberTrigger = game.numeroDaOnda;
+
 		}
 	}
 
@@ -93,5 +105,32 @@ public class Modeler : MonoBehaviour {
 		return Mathf.Sqrt(euclideanDistance);
 	}
 
-	void KNN(){}
+	void KNN(){
+
+        if (game.numeroDaOnda == 1) { }
+
+        else if (game.numeroDaOnda == 2) { }
+
+        else if (game.numeroDaOnda == 3) { }
+
+        else if (game.numeroDaOnda == 4) { }
+
+        else if (game.numeroDaOnda == 5) { }
+
+        else if (game.numeroDaOnda == 6) { }
+
+        else if (game.numeroDaOnda == 7) { }
+
+        else if (game.numeroDaOnda == 8) { }
+
+        else if (game.numeroDaOnda == 9) { }
+
+        else if (game.numeroDaOnda == 10) { }
+
+        else if (game.numeroDaOnda == 11) { }
+
+        else if (game.numeroDaOnda == 12) { }
+
+
+    }
 }
