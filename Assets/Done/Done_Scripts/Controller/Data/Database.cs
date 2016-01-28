@@ -21,10 +21,11 @@ public class Database : MonoBehaviour {
 		private float delayMed;
 		private float bleachingRate; //Alvejamento.
 		private float qtMoviPerSecond;
-		private int cellModelLevel;
+        private float campainKill;
+        private int cellModelLevel;
 		
 		
-		public Cell (float hitRateEnemyShip, float hitRateAste, float colisionRateEnemyShip, float colisionRateAste, float delayMed, float bleachingRate, float qtMoviPerSecond,int cellModelLevel)
+		public Cell (float hitRateEnemyShip, float hitRateAste, float colisionRateEnemyShip, float colisionRateAste, float delayMed, float bleachingRate, float campainKill, float qtMoviPerSecond,int cellModelLevel)
 		{
 			this.hitRateEnemyShip = hitRateEnemyShip;
 			this.hitRateAste = hitRateAste;
@@ -33,7 +34,8 @@ public class Database : MonoBehaviour {
 			this.delayMed = delayMed;
 			this.bleachingRate = bleachingRate;
 			this.qtMoviPerSecond = qtMoviPerSecond;
-			this.cellModelLevel = cellModelLevel;
+            this.campainKill = campainKill;
+            this.cellModelLevel = cellModelLevel;
 		}
 		
 		public float GetHitRateEnemyShip ()
@@ -71,17 +73,29 @@ public class Database : MonoBehaviour {
 			return this.qtMoviPerSecond;
 		}
 
-		
-		public float GetCellModelLevel ()
+        public float GetCampainKill()
+        {
+            return this.campainKill;
+        }
+
+
+        public float GetCellModelLevel ()
 		{
 			return this.cellModelLevel;
 		}
 
-		//Only for debug.
-		public string ToStringCellValues ()
+        public float[] ReturnValues()
+        {
+            float[] array = {this.hitRateEnemyShip,this.hitRateAste,this.colisionRateEnemyShip,this.colisionRateAste,this.delayMed,
+                this.bleachingRate,this.qtMoviPerSecond,this.campainKill,this.cellModelLevel };
+            return array;
+        }
+
+        //Only for debug.
+        public string ToStringCellValues ()
 		{
 			return this.hitRateEnemyShip + "-" + this.hitRateAste + "-" + this.colisionRateEnemyShip + "-" + this.colisionRateAste + "-" + this.delayMed + "-" +
-				this.bleachingRate + "-" + this.qtMoviPerSecond + "-" + this.cellModelLevel;
+				this.bleachingRate + "-" + this.qtMoviPerSecond + "-" + this.campainKill + "-" + this.cellModelLevel;
 		}
 	}
 
@@ -126,7 +140,8 @@ public class Database : MonoBehaviour {
 			                   float.Parse(broke_string[4], CultureInfo.InvariantCulture.NumberFormat),
 			                   float.Parse(broke_string[5], CultureInfo.InvariantCulture.NumberFormat),
 			                   float.Parse(broke_string[6], CultureInfo.InvariantCulture.NumberFormat),
-			                   int.Parse(broke_string[7]));
+                               float.Parse(broke_string[6], CultureInfo.InvariantCulture.NumberFormat),
+                               int.Parse(broke_string[7]));
 
 			//Debug.Log("Cell :" + generic.ToStringCellValues());
 

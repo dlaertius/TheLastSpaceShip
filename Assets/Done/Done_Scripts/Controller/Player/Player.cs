@@ -204,7 +204,6 @@ public class Player : MonoBehaviour {
 	public float[] PlayerStatus(){
 
 		float[] playerStatistics = {MediaDelaysJogador(), MediaTirosLevados(), MediaCampanha100Kill(), MediaCampanhaMovimentoPorSegundo()};
-		Debug.Log (playerStatistics);
 		return playerStatistics;
 	}
 }

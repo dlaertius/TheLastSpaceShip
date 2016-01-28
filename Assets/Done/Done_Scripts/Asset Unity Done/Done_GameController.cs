@@ -346,15 +346,6 @@ public class Done_GameController : MonoBehaviour{
 		return "0" + horas + ":" + minutos + ":" + segundos;	
 	}
 
-	/*public double[] GameStatus(){
-		double[] gameStatusPlayer = {player.CalculaTaxaGenerica(this.totalDeNavesDestruidas,this.navesTotais), 
-			player.CalculaTaxaGenerica(this.totalDeAsteroidesDestruidos, this.asteroidesTotais),
-			player.CalculaTaxaGenerica(this.navesColididas,this.navesTotais),player.CalculaTaxaGenerica(this.asteroidesColididos, this.asteroidesTotais),
-			player.MediaDelaysJogador(),player.MediaTirosLevados(),player.MediaCampanha100Kill(),player.MediaCampanhaMovimentoPorSegundo()};
-
-		return gameStatusPlayer;
-	}*/
-
 	/*
 	 * This original version used double values.
 	 * A versao original usou valores double.
