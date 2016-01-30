@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -133,20 +134,25 @@ public class Database : MonoBehaviour {
 
 			string[] broke_string = line.Split(',');
 
-			generic = new Cell(float.Parse(broke_string[0], CultureInfo.InvariantCulture.NumberFormat),
-			                   float.Parse(broke_string[1], CultureInfo.InvariantCulture.NumberFormat),
-			                   float.Parse(broke_string[2], CultureInfo.InvariantCulture.NumberFormat),
-			                   float.Parse(broke_string[3], CultureInfo.InvariantCulture.NumberFormat),
-			                   float.Parse(broke_string[4], CultureInfo.InvariantCulture.NumberFormat),
-			                   float.Parse(broke_string[5], CultureInfo.InvariantCulture.NumberFormat),
-			                   float.Parse(broke_string[6], CultureInfo.InvariantCulture.NumberFormat),
-                               float.Parse(broke_string[6], CultureInfo.InvariantCulture.NumberFormat),
-                               int.Parse(broke_string[7]));
+			try{
+				generic = new Cell(Single.Parse(broke_string[0]),
+			                   Single.Parse(broke_string[1]),
+			                   Single.Parse(broke_string[2]),
+			                   Single.Parse(broke_string[3]),
+			                   Single.Parse(broke_string[4]),
+			                   Single.Parse(broke_string[5]),
+			                   Single.Parse(broke_string[6]),
+			                   Single.Parse(broke_string[7]),
+			                   Int32.Parse(broke_string[8])
+			                   );
+				list.Add(generic);
 
-			//Debug.Log("Cell :" + generic.ToStringCellValues());
-
-			list.Add(generic);
+			}catch (Exception e){
+				Debug.Log(e.InnerException);
+				Debug.Log("The convertions doesn't work!"); 
+			} 
 		}
+		Debug.Log("The convertion works fine!");
 	}
 
 

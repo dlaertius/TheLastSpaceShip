@@ -159,7 +159,7 @@ public class Done_GameController : MonoBehaviour{
 
 		DebugCheckUpInitial();
 
-		Debug.Log(player.GetNomeJogador() + '-' + player.GetGameMode());
+		//Debug.Log(player.GetNomeJogador() + '-' + player.GetGameMode());
 		
 		yield return new WaitForSeconds (startWait);
 		

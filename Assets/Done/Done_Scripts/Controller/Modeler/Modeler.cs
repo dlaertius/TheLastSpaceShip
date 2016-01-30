@@ -18,11 +18,11 @@ public class Modeler : MonoBehaviour {
     public Player player;
     public Database data;
 
-    private int waveNumberTrigger = 1;
+	private int waveNumberTrigger;
 
     private string playerLevelModeler;
 
-    private float[] smallerDistance = { 1, 1, 1};
+    private float[] smallerDistance = { 100, 100, 100};
 
     private List<float> union_PlayerAndGameStatus;
 
@@ -51,19 +51,19 @@ public class Modeler : MonoBehaviour {
 
         this.playerLevelModeler = "none";
 
-        this.waveNumberTrigger = game.numeroDaOnda;
+		this.waveNumberTrigger =  1;
    
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-        //trigger to calculate player level reccomender.
+        //trigger to calculate player level reccomender after first wave.
         if (waveNumberTrigger != game.numeroDaOnda && game.numeroDaOnda != 1) {
 
-			Debug.Log("Trigger used for Modeler.cs linha 30 to watch the waves alteration.");
+			//Debug.Log("Trigger used for Modeler.cs linha 30 to watch the waves alteration.");
 
-            KNN(3); //Use only three neighbors in this knn example.
+            KNN(); //Use only three neighbors in this knn example.
 
             waveNumberTrigger = game.numeroDaOnda;
 
@@ -76,10 +76,10 @@ public class Modeler : MonoBehaviour {
 	void GetData () {
 
 		dataPlayer = player.PlayerStatus();
-		Debug.LogError(dataPlayer.ToString());
+		//dataPlayer.ToList().ForEach(i => Debug.Log(i.ToString()));
 
 		dataGame = game.GameStatus();
-		Debug.LogError(dataGame.ToString());
+		//dataGame.ToList().ForEach(i => Debug.Log(i.ToString()));
 
         this.union_PlayerAndGameStatus.AddRange(dataGame);
         this.union_PlayerAndGameStatus.AddRange(dataPlayer);
@@ -92,15 +92,13 @@ public class Modeler : MonoBehaviour {
 
 		//ShotDelay - DelayTiro.
 		float normalizeValue_Delay = Normalize((float)dataPlayer[0], 23.0f, 0.0f);
+		//Debug.Log("Delay Normalized - After/Before: " + normalizeValue_Delay + "-" + dataPlayer[0]);
 		this.dataPlayer[0] = normalizeValue_Delay;
-		Debug.Log(normalizeValue_Delay + "-" + dataPlayer[0]);
 
 		//MovimentPrSecond - MovPorSegund.
 		float normalizeValue_Movim = Normalize((float)dataPlayer[dataPlayer.Length-1], 4.43f, 0.0f);
+		//Debug.Log("Mov Per S. Normalized - After/Before: " + normalizeValue_Movim + "-" + dataPlayer[dataPlayer.Length-1]);
 		this.dataPlayer[dataPlayer.Length-1] = normalizeValue_Movim;
-		Debug.Log(normalizeValue_Movim + "-" + dataPlayer[dataPlayer.Length-1]);
-
-
 	}
 
 	/*
@@ -124,8 +122,8 @@ public class Modeler : MonoBehaviour {
 		return Mathf.Sqrt(euclideanDistance);
 	}
 
-	void KNN(int kneighbors){
-        
+	void KNN(){
+
         //Get Player and Game data.
         GetData();
 
@@ -135,9 +133,9 @@ public class Modeler : MonoBehaviour {
 
         List<Database.Cell> waveListUsed;
 
-        if (this.waveNumberTrigger == 1) { waveListUsed = data.wave_1_cell_list; }
+		if (this.waveNumberTrigger == 1) { waveListUsed = data.wave_1_cell_list; }
 
-        else if (this.waveNumberTrigger == 2) { waveListUsed = data.wave_2_cell_list; }
+		else if (this.waveNumberTrigger == 2) { waveListUsed = data.wave_2_cell_list; }
 
         else if (this.waveNumberTrigger == 3) { waveListUsed = data.wave_3_cell_list; }
 
@@ -183,9 +181,18 @@ public class Modeler : MonoBehaviour {
                 }
             }
 
-            knnDic.Add(distance, cell_values);
+            try{
+				knnDic.Add(distance, cell_values);
+			}catch{
 
+				//Pega a key que contem no dic, compara as classes se igual descarta senao sujou.
+
+				Debug.Log("Two value with same key: " + distance);
+				Debug.Log("Class of players: " + cell_values.GetCellModelLevel());
+			}
         }
+
+		Debug.Log(this.smallerDistance[0] + "-" + this.smallerDistance[1] + "-" + this.smallerDistance[2]);
 
         /*
         Debug.Log("Menor proximidade 1 : " + knnDic[smallerDistance[0]]);
