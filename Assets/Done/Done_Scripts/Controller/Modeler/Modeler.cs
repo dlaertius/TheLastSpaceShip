@@ -7,9 +7,10 @@
  */
 
 using UnityEngine;
+using System;
 using System.IO;
-using System.Collections;
 using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 
 public class Modeler : MonoBehaviour {
@@ -22,7 +23,7 @@ public class Modeler : MonoBehaviour {
 
     private string playerLevelModeler;
 
-    private float[] smallerDistance = { 100, 100, 100};
+    private float[] smallerDistance = { 100, 100, 100 };
 
     private List<float> union_PlayerAndGameStatus;
 
@@ -30,7 +31,7 @@ public class Modeler : MonoBehaviour {
     * Used to save the knn distance for each cell comparated with players data.
     */
 
-    private Dictionary<float, Database.Cell> knnDic = new Dictionary<float, Database.Cell>();
+	private Dictionary<float, List<Database.Cell>> knnDic;
 
 	/*
 	 * Types: amateur, intermediate, hardcore.
@@ -47,7 +48,9 @@ public class Modeler : MonoBehaviour {
 
         game = FindObjectOfType(typeof(Done_GameController)) as Done_GameController;
 
-          union_PlayerAndGameStatus = new List<float>();
+		union_PlayerAndGameStatus = new List<float>();
+
+		knnDic = new Dictionary<float, List <Database.Cell>>();
 
         this.playerLevelModeler = "none";
 
@@ -63,7 +66,7 @@ public class Modeler : MonoBehaviour {
 
 			//Debug.Log("Trigger used for Modeler.cs linha 30 to watch the waves alteration.");
 
-            KNN(); //Use only three neighbors in this knn example.
+            KNN(3); //Use only three neighbors in this knn example.
 
             waveNumberTrigger = game.numeroDaOnda;
 
@@ -122,7 +125,7 @@ public class Modeler : MonoBehaviour {
 		return Mathf.Sqrt(euclideanDistance);
 	}
 
-	void KNN(){
+	void KNN(int neighbors){
 
         //Get Player and Game data.
         GetData();
@@ -182,25 +185,45 @@ public class Modeler : MonoBehaviour {
             }
 
             try{
-				knnDic.Add(distance, cell_values);
+
+				if(knnDic.ContainsKey(distance)){
+					knnDic[distance].Add(cell_values);
+					Debug.Log("Duplicated Key ADD");
+					/*
+					List<Database.Cell> cell = knnDic[distance];
+					foreach(Database.Cell x in cell){
+						Debug.Log(x.ToStringCellValues());
+					}*/
+
+				}else{
+					knnDic.Add(distance, new List<Database.Cell>{cell_values});
+					Debug.Log("Everyting works fine!");
+				}
+							
 			}catch{
 
 				//Pega a key que contem no dic, compara as classes se igual descarta senao sujou.
 
-				Debug.Log("Two value with same key: " + distance);
-				Debug.Log("Class of players: " + cell_values.GetCellModelLevel());
+				Debug.LogError("Two value with same key: " + distance);
+				Debug.LogError("Class of players: " + cell_values.GetCellModelLevel());
 			}
         }
+	
+		Debug.Log("1-" + this.smallerDistance[0] + " , 2-" + this.smallerDistance[1] + ", 3-" + this.smallerDistance[2]);
 
-		Debug.Log(this.smallerDistance[0] + "-" + this.smallerDistance[1] + "-" + this.smallerDistance[2]);
+		/*int x =0;
 
-        /*
-        Debug.Log("Menor proximidade 1 : " + knnDic[smallerDistance[0]]);
-        Debug.Log("Menor proximidade 1 : " + knnDic[smallerDistance[1]]);
-        Debug.Log("Menor proximidade 1 : " + knnDic[smallerDistance[2]]);
-        */
+		while(x < neighbors){
+			if(knnDic.TryGetValue(this.smallerDistance[0])){
+				List<Database.Cell> w = knnDic[this.smallerDistance[0]];
+				foreach(Database.Cell z in w){
+					Debug.Log(z.ToStringCellValues());
+					x++;
+				}
+			}
+		}*/
 
         //Cleaning to use in another execution time.
-        knnDic.Clear();
+		knnDic.Clear();
     }
 }
