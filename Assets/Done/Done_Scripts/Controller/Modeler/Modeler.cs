@@ -189,11 +189,6 @@ public class Modeler : MonoBehaviour {
 				if(knnDic.ContainsKey(distance)){
 					knnDic[distance].Add(cell_values);
 					Debug.Log("Duplicated Key ADD");
-					/*
-					List<Database.Cell> cell = knnDic[distance];
-					foreach(Database.Cell x in cell){
-						Debug.Log(x.ToStringCellValues());
-					}*/
 
 				}else{
 					knnDic.Add(distance, new List<Database.Cell>{cell_values});
@@ -202,8 +197,6 @@ public class Modeler : MonoBehaviour {
 							
 			}catch{
 
-				//Pega a key que contem no dic, compara as classes se igual descarta senao sujou.
-
 				Debug.LogError("Two value with same key: " + distance);
 				Debug.LogError("Class of players: " + cell_values.GetCellModelLevel());
 			}
@@ -211,17 +204,51 @@ public class Modeler : MonoBehaviour {
 	
 		Debug.Log("1-" + this.smallerDistance[0] + " , 2-" + this.smallerDistance[1] + ", 3-" + this.smallerDistance[2]);
 
-		/*int x =0;
+		/*
+		 * Used to save players class according to neighbors and define.
+		 */
+		List<int> playersClass = new List<int>();
 
-		while(x < neighbors){
-			if(knnDic.TryGetValue(this.smallerDistance[0])){
-				List<Database.Cell> w = knnDic[this.smallerDistance[0]];
-				foreach(Database.Cell z in w){
-					Debug.Log(z.ToStringCellValues());
-					x++;
-				}
-			}
-		}*/
+		List<Database.Cell> value1;
+
+		List<Database.Cell> value2;
+
+		List<Database.Cell> value3;
+
+		if(knnDic.TryGetValue(this.smallerDistance[0], out value1)){
+
+			foreach(Database.Cell z in value1){ playersClass.Add(z.GetCellModelLevel()); }
+		}
+		else if(knnDic.TryGetValue(this.smallerDistance[1], out value2)){
+
+			foreach(Database.Cell a in value2){ playersClass.Add(a.GetCellModelLevel()); }
+
+		}else if(knnDic.TryGetValue(this.smallerDistance[0], out value3)){
+
+			foreach(Database.Cell q in value3){ playersClass.Add(q.GetCellModelLevel()); }
+		}
+	
+
+		int v1 = 0;
+		int v2 = 0;
+		int v3 = 0;
+		int counter = 0;
+		while(counter < neighbors){
+			int qwe = playersClass[counter];
+			playersClass.Remove(counter);
+			if (qwe == 1){ v1++; }
+			else if (qwe == 2) { v2++; }
+			else {v3++;}
+			counter++;
+		}
+
+		if(v1 > v2 && v1 > v3) { this.playerLevelModeler =  "amateur" ;}
+
+		else if (v2 > v1 && v2 > v3) { this.playerLevelModeler =  "intermediate" ; }
+
+		else if (v3 > v2 && v3 > v1) { this.playerLevelModeler =  "hardcore" ; }
+
+		Debug.Log("PLayer model > " + this.playerLevelModeler);
 
         //Cleaning to use in another execution time.
 		knnDic.Clear();

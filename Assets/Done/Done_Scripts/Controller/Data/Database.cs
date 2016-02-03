@@ -80,7 +80,7 @@ public class Database : MonoBehaviour {
         }
 
 
-        public float GetCellModelLevel ()
+        public int GetCellModelLevel ()
 		{
 			return this.cellModelLevel;
 		}
