@@ -204,10 +204,12 @@ public class Modeler : MonoBehaviour {
 	
 		Debug.Log("1-" + this.smallerDistance[0] + " , 2-" + this.smallerDistance[1] + ", 3-" + this.smallerDistance[2]);
 
-		/*
+        /*
 		 * Used to save players class according to neighbors and define.
 		 */
-		List<int> playersClass = new List<int>();
+
+
+       Queue<int> queue = new Queue<int>();
 
 		List<Database.Cell> value1;
 
@@ -217,30 +219,30 @@ public class Modeler : MonoBehaviour {
 
 		if(knnDic.TryGetValue(this.smallerDistance[0], out value1)){
 
-			foreach(Database.Cell z in value1){ playersClass.Add(z.GetCellModelLevel()); }
-		}
+			foreach(Database.Cell z in value1){ queue.Enqueue(z.GetCellModelLevel()); } //playersClass.Add(z.GetCellModelLevel());
+        }
 		else if(knnDic.TryGetValue(this.smallerDistance[1], out value2)){
 
-			foreach(Database.Cell a in value2){ playersClass.Add(a.GetCellModelLevel()); }
+			foreach(Database.Cell a in value2){ queue.Enqueue(a.GetCellModelLevel()); } //playersClass.Add(a.GetCellModelLevel());
+        }
+        else if(knnDic.TryGetValue(this.smallerDistance[2], out value3)){
 
-		}else if(knnDic.TryGetValue(this.smallerDistance[0], out value3)){
+			foreach(Database.Cell q in value3){ queue.Enqueue(q.GetCellModelLevel()); } //playersClass.Add(q.GetCellModelLevel());
+        }
 
-			foreach(Database.Cell q in value3){ playersClass.Add(q.GetCellModelLevel()); }
-		}
-	
+        Debug.Log("Chegou aqui");
 
 		int v1 = 0;
 		int v2 = 0;
 		int v3 = 0;
 		int counter = 0;
 		while(counter < neighbors){
-			int qwe = playersClass[counter];
-			playersClass.Remove(counter);
+            int qwe = queue.Dequeue();
 			if (qwe == 1){ v1++; }
 			else if (qwe == 2) { v2++; }
 			else {v3++;}
 			counter++;
-		}
+		}/*
 
 		if(v1 > v2 && v1 > v3) { this.playerLevelModeler =  "amateur" ;}
 
@@ -248,7 +250,7 @@ public class Modeler : MonoBehaviour {
 
 		else if (v3 > v2 && v3 > v1) { this.playerLevelModeler =  "hardcore" ; }
 
-		Debug.Log("PLayer model > " + this.playerLevelModeler);
+		Debug.Log("PLayer model > " + this.playerLevelModeler);*/
 
         //Cleaning to use in another execution time.
 		knnDic.Clear();
