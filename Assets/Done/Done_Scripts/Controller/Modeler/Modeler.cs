@@ -18,25 +18,42 @@ public class Modeler : MonoBehaviour {
     public Done_GameController game;
     public Player player;
     public Database data;
+	
+	/*
+	 * Types: amateur, intermediate, hardcore.
+	 */
+	private string playerType = "";
 
 	private int waveNumberTrigger;
 
     private string playerLevelModeler;
 
-    private float[] smallerDistance = { 100, 100, 100 };
+	private float[] smallerDistance;
+
+	private float distance;
 
     private List<float> union_PlayerAndGameStatus;
 
-    /*
+	private List<Database.Cell> waveListUsed;
+
+	/*
+	 * Local List used in method only.
+	 */
+
+	
+	private List<int> modelList;
+	
+	private List<Database.Cell> value1;
+	
+	private List<Database.Cell> value2;
+	
+	private List<Database.Cell> value3;
+	
+	/*
     * Used to save the knn distance for each cell comparated with players data.
     */
 
 	private Dictionary<float, List<Database.Cell>> knnDic;
-
-	/*
-	 * Types: amateur, intermediate, hardcore.
-	 */
-	private string playerType = "";
 
 	private float[] dataPlayer, dataGame;
 
@@ -55,6 +72,8 @@ public class Modeler : MonoBehaviour {
         this.playerLevelModeler = "none";
 
 		this.waveNumberTrigger =  1;
+
+		this.smallerDistance = new float[3];
    
 	}
 	
@@ -114,6 +133,12 @@ public class Modeler : MonoBehaviour {
 		return ((value - valueMin)/valueMax);
 	}
 
+
+	/*
+	 * @input: (1) A list with actual player. (2) An array from players dataset.
+	 * @output: Distance euclidean between their status combined.
+	 * 
+	 */
 	float EuclideanDistance (List<float> dataPlayer, float[] dataBase) {
 
 		float euclideanDistance = 0.0f;
@@ -128,51 +153,67 @@ public class Modeler : MonoBehaviour {
 	void KNN(int neighbors){
 
         //Get Player and Game data.
-        GetData();
+		try{
+        	GetData();
+			this.smallerDistance[0] = 100;
+			this.smallerDistance[1] = 100;
+			this.smallerDistance[2] = 100;
+			
+		}catch{ Debug.LogError("Cannot possible get data or initialize smaller distance array."); }
 
         /*
         * Union two arrays, GameStatus and PlayerStatus;
         */
 
-        List<Database.Cell> waveListUsed;
+		try{	      
 
-		if (this.waveNumberTrigger == 1) { waveListUsed = data.wave_1_cell_list; }
+			if (this.waveNumberTrigger == 1) { waveListUsed = data.wave_1_cell_list; }
 
-		else if (this.waveNumberTrigger == 2) { waveListUsed = data.wave_2_cell_list; }
+			else if (this.waveNumberTrigger == 2) { waveListUsed = data.wave_2_cell_list; }
 
-        else if (this.waveNumberTrigger == 3) { waveListUsed = data.wave_3_cell_list; }
+	        else if (this.waveNumberTrigger == 3) { waveListUsed = data.wave_3_cell_list; }
 
-        else if (this.waveNumberTrigger == 4) { waveListUsed = data.wave_4_cell_list; }
+	        else if (this.waveNumberTrigger == 4) { waveListUsed = data.wave_4_cell_list; }
 
-        else if (this.waveNumberTrigger == 5) { waveListUsed = data.wave_5_cell_list; }
+	        else if (this.waveNumberTrigger == 5) { waveListUsed = data.wave_5_cell_list; }
 
-        else if (this.waveNumberTrigger == 6) { waveListUsed = data.wave_6_cell_list; }
+	        else if (this.waveNumberTrigger == 6) { waveListUsed = data.wave_6_cell_list; }
 
-        else if (this.waveNumberTrigger == 7) { waveListUsed = data.wave_7_cell_list; }
+	        else if (this.waveNumberTrigger == 7) { waveListUsed = data.wave_7_cell_list; }
 
-        else if (this.waveNumberTrigger == 8) { waveListUsed = data.wave_8_cell_list; }
+	        else if (this.waveNumberTrigger == 8) { waveListUsed = data.wave_8_cell_list; }
 
-        else if (this.waveNumberTrigger == 9) { waveListUsed = data.wave_9_cell_list; }
+	        else if (this.waveNumberTrigger == 9) { waveListUsed = data.wave_9_cell_list; }
 
-        else if (this.waveNumberTrigger == 10) { waveListUsed = data.wave_10_cell_list; }
+	        else if (this.waveNumberTrigger == 10) { waveListUsed = data.wave_10_cell_list; }
 
-        else if (this.waveNumberTrigger == 11) { waveListUsed = data.wave_11_cell_list; }
+	        else if (this.waveNumberTrigger == 11) { waveListUsed = data.wave_11_cell_list; }
 
-        else waveListUsed = data.wave_12_cell_list; //(this.waveNumberTrigger == 12)
+	        else waveListUsed = data.wave_12_cell_list; //(this.waveNumberTrigger == 12)
 
-        /*
-        * Moving into Cells data and calculate euclidean distance of each one inside dataset.
-        *
-        */
+		}catch{ Debug.LogError("Cannot possible load cell info per wave. "); }
+
+/*
+* Moving into Cells data and calculate euclidean distance of each one inside dataset.
+*
+*/	
         foreach (Database.Cell cell_values in waveListUsed)
         {
 
-            float distance = EuclideanDistance(this.union_PlayerAndGameStatus, cell_values.ReturnValues());
+			try{
+				/*Debug.LogWarning ("Siz: " + this.union_PlayerAndGameStatus.Count());
+				foreach(float x in this.union_PlayerAndGameStatus){ Debug.Log("Valor UniP.: " + x);}
+				Debug.Log("-------------------");
+				Debug.LogWarning ("Siz: " + cell_values.ReturnValues().Count());
+				foreach(float x in  cell_values.ReturnValues()){ Debug.Log("Valor Return.: " + x);}*/
+				
+				
+				distance = EuclideanDistance(this.union_PlayerAndGameStatus, cell_values.ReturnValues());
+				//Debug.Log("Distance: " + distance);
+			}catch (Exception e){ Debug.LogError ("Euclidean Distance problem value: " + distance +"_" + e.ToString()); }
 
-            /* Save the key for the three distance smallers values.
-            */
-
-            if (distance < smallerDistance[2]) {
+/* Save the key for the three distance smallers values.*/
+			if (distance < smallerDistance[2]) {
                 if (distance < smallerDistance[1]){
                     if (distance < smallerDistance[0]) {
                         smallerDistance[0] = distance;
@@ -183,6 +224,7 @@ public class Modeler : MonoBehaviour {
                     smallerDistance[2] = distance;
                 }
             }
+			
 
             try{
 
@@ -195,64 +237,74 @@ public class Modeler : MonoBehaviour {
 					Debug.Log("Everyting works fine!");
 				}
 							
-			}catch{
+			}catch (Exception e){
 
 				Debug.LogError("Two value with same key: " + distance);
 				Debug.LogError("Class of players: " + cell_values.GetCellModelLevel());
+				Debug.LogError(e.ToString());
 			}
         }
 	
 		Debug.Log("1-" + this.smallerDistance[0] + " , 2-" + this.smallerDistance[1] + ", 3-" + this.smallerDistance[2]);
+/*
+ * Used to save players class according to neighbors and define.
+ */
+		try{
+			this.modelList = new List<int>();
 
-        /*
-		 * Used to save players class according to neighbors and define.
-		 */
+			if(knnDic.TryGetValue(this.smallerDistance[0], out value1)){
 
+				foreach(Database.Cell z in value1){ modelList.Add(z.GetCellModelLevel()); } //playersClass.Add(z.GetCellModelLevel());
+	        }
 
-       Queue<int> queue = new Queue<int>();
+			if(knnDic.TryGetValue(this.smallerDistance[1], out value2)){
 
-		List<Database.Cell> value1;
+				foreach(Database.Cell a in value2){ modelList.Add(a.GetCellModelLevel()); } //playersClass.Add(a.GetCellModelLevel());
+	        }
+	        
+			if(knnDic.TryGetValue(this.smallerDistance[2], out value3)){
 
-		List<Database.Cell> value2;
+				foreach(Database.Cell q in value3){ modelList.Add(q.GetCellModelLevel()); } //playersClass.Add(q.GetCellModelLevel());
+	        }
 
-		List<Database.Cell> value3;
+			int v1 = 0;
+			int v2 = 0;
+			int v3 = 0;
+			int counter = 0;
+			int qwe = 0;
 
-		if(knnDic.TryGetValue(this.smallerDistance[0], out value1)){
+			/*foreach(int i in modelList){
+				Debug.Log("List Itens: " + i);
+			}*/
 
-			foreach(Database.Cell z in value1){ queue.Enqueue(z.GetCellModelLevel()); } //playersClass.Add(z.GetCellModelLevel());
-        }
-		else if(knnDic.TryGetValue(this.smallerDistance[1], out value2)){
+			while(counter < neighbors){
+				try{
+					qwe = modelList.ElementAt(counter);
+					if (qwe == 0){ v1++; }
+					else if (qwe == 1) { v2++; }
+					else {v3++;}
+					Debug.Log(qwe);
 
-			foreach(Database.Cell a in value2){ queue.Enqueue(a.GetCellModelLevel()); } //playersClass.Add(a.GetCellModelLevel());
-        }
-        else if(knnDic.TryGetValue(this.smallerDistance[2], out value3)){
+				}catch{
+					Debug.LogError("Houve erro a partir. " + counter);
+				}
+				counter++;
+			}
 
-			foreach(Database.Cell q in value3){ queue.Enqueue(q.GetCellModelLevel()); } //playersClass.Add(q.GetCellModelLevel());
-        }
+			if(v1 > v2 && v1 > v3) { this.playerLevelModeler =  "amateur" ;}
 
-        Debug.Log("Chegou aqui");
+			else if (v2 > v1 && v2 > v3) { this.playerLevelModeler =  "intermediate" ; }
 
-		int v1 = 0;
-		int v2 = 0;
-		int v3 = 0;
-		int counter = 0;
-		while(counter < neighbors){
-            int qwe = queue.Dequeue();
-			if (qwe == 1){ v1++; }
-			else if (qwe == 2) { v2++; }
-			else {v3++;}
-			counter++;
-		}/*
+			else if (v3 > v2 && v3 > v1) { this.playerLevelModeler =  "hardcore" ; }
 
-		if(v1 > v2 && v1 > v3) { this.playerLevelModeler =  "amateur" ;}
+			Debug.Log("PLayer model > " + this.playerLevelModeler);
 
-		else if (v2 > v1 && v2 > v3) { this.playerLevelModeler =  "intermediate" ; }
+	        /*Cleaning to use in another execution time, it's very important!!.*/
+			knnDic.Clear();
+			modelList.Clear();
+			waveListUsed.Clear();
+			union_PlayerAndGameStatus.Clear();
 
-		else if (v3 > v2 && v3 > v1) { this.playerLevelModeler =  "hardcore" ; }
-
-		Debug.Log("PLayer model > " + this.playerLevelModeler);*/
-
-        //Cleaning to use in another execution time.
-		knnDic.Clear();
+		}catch(Exception e){ Debug.LogError(e.ToString()); Debug.LogError("Cannot be get value and comparated final part."); }
     }
 }

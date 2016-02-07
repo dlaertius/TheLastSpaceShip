@@ -96,7 +96,7 @@ public class Do_Window : MonoBehaviour {
 
 				this.ativaMensagemEro = false;
 
-				Debug.Log(nomeCapitao);
+				//Debug.Log(nomeCapitao);
 		
 				userData.SetName(nomeCapitao);
 				
@@ -105,7 +105,7 @@ public class Do_Window : MonoBehaviour {
 				else if(toogleAdap == false && toogleEasy == false && toogleMed == true && toogleHard == false) userData.SetMode("med");
 				else if(toogleAdap == false && toogleEasy == false && toogleMed == false && toogleHard == true) userData.SetMode("hard");
 				
-				Debug.Log(userData.GetMode());
+				//Debug.Log(userData.GetMode());
 				
 				Application.LoadLevel(2);
 				

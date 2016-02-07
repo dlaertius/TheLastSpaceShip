@@ -226,7 +226,7 @@ public class Done_GameController : MonoBehaviour{
 
 			if(!todosPassaram && !gameOver){
 
-				Debug.LogError("Entrou aqui!");
+				//Debug.LogError("Entrou aqui!");
 
 				bool x = false;
 
@@ -264,7 +264,7 @@ public class Done_GameController : MonoBehaviour{
 					Debug.Log(element);
 				}
 
-				Debug.Log(player.MediaDelaysJogador());
+				Debug.Log(player.MediaDelaysJogador()); //Problem when this value is -1.
 				Debug.Log(player.MediaTirosLevados());
 				Debug.Log(player.MediaCampanha100Kill());
 				Debug.Log(player.MediaCampanhaMovimentoPorSegundo());

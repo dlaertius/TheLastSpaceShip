@@ -13,7 +13,7 @@ public class Coletor : MonoBehaviour {
 	
 	void Awake() {
 		caminhoArquivo = Application.persistentDataPath + " Coletor.csv"; // Pegando o caminho certo.
-		Debug.Log(caminhoArquivo);
+		//Debug.Log(caminhoArquivo);
 	}
 	
 	public void SaveToFile(string dados){
