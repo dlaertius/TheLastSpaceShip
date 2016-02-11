@@ -128,7 +128,6 @@ public class Done_GameController : MonoBehaviour{
 		if (restart){
 			/*if (Input.GetKeyDown (KeyCode.R)){
 				DontDestroyOnLoad(userData);
-
 				Application.LoadLevel (Application.loadedLevel);
 			}else */if(Input.GetKeyDown (KeyCode.Home)){
 				Destroy(userData);
@@ -150,6 +149,11 @@ public class Done_GameController : MonoBehaviour{
 			waveController.IncreaseWave(this.numeroDaOnda);
 			waveController.IncreasesPerWave(this.numeroDaOnda);
 		}
+
+        if (finishGame) {
+            TextoMensagemCentral("Congratulations you finish the game! \n You Level: ");
+            restart = true;
+        }
 	}
 
 	
@@ -175,7 +179,7 @@ public class Done_GameController : MonoBehaviour{
 		
 		yield return new WaitForSeconds (startWait);
 		
-		while (numeroDaOnda <= numeroDeOndas + 1){
+		while (!this.finishGame){
 
 			//Funçao de zeramento.
 			if(numeroDaOnda == numeroDeOndas + 1){

@@ -268,11 +268,11 @@ public class WaveController : MonoBehaviour {
 				}
 			}
 			
-			if(player.GetGameMode().Equals("easy")) if(game.spawnWait >= 1.0f) { game.spawnWait -= 0.1f; Debug.Log("Modo facil!"); }
+			if(player.GetGameMode().Equals("easy")) if(game.spawnWait >= 1.0f) game.spawnWait -= 0.1f;
 			
 			if(player.GetGameMode().Equals("med")) if(game.spawnWait >= 1.0f) game.spawnWait -= 0.4f;
 			
-			if(player.GetGameMode().Equals("hard")) if(game.spawnWait >= 1.0f) { game.spawnWait -= 0.4f; Debug.Log("Mod HArd");}
+			if(player.GetGameMode().Equals("hard")) if(game.spawnWait >= 1.0f) game.spawnWait -= 0.4f;
 			
 			game.hazardCount += 5; // Aumetnando o numero de mobs por onda -- Add more elemts per wave.
 
@@ -376,7 +376,7 @@ public class WaveController : MonoBehaviour {
 		this.velocidadeAsteroide_2.speed -= 0.3f;
 		this.velocidadeAsteroide_3.speed -= 0.3f;
 
-		Debug.LogWarning("HardMOde Add!");
+		Debug.LogWarning("Hard mode Add!");
 	}
 
 	void AdaptMode (Done_Mover velo, Done_WeaponController armas, Done_EvasiveManeuver evazao, int wave){

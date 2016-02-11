@@ -34,6 +34,11 @@ public class Modeler : MonoBehaviour {
 
 	private List<Database.Cell> waveListUsed;
 
+    /*
+    * Used to save and after to show, the most ocurrency of level indicator.
+    */
+    public List<int> dataUserModeler;
+
 	/*
 	 * Local List used in method only.
 	 */
@@ -67,7 +72,9 @@ public class Modeler : MonoBehaviour {
 
 		union_PlayerAndGameStatus = new List<float>();
 
-		knnDic = new Dictionary<float, List <Database.Cell>>();
+        dataUserModeler = new List<int>();
+
+        knnDic = new Dictionary<float, List <Database.Cell>>();
 
 		/*
 		 *If player mode equal to "adapt", so at first iterator this will be change for a player level recomender.
@@ -101,19 +108,57 @@ public class Modeler : MonoBehaviour {
 	}
 
 
-	public string GetPlayerType() {
-		if(player.GetGameMode().Equals("adapt")){
+	public string GetPlayerType()
+    {
+		if(player.GetGameMode().Equals("adapt"))
+        {
 			return this.playerType;
-		}else{
+		}else
+        {
 			return "There is no return for other game mode.";
 		}
 	}
 
-	public int GetWaveNumberTrigger(){
+	public int GetWaveNumberTrigger()
+    {
 		return this.waveNumberTrigger;
 	}
 
-	void GetData () {
+    public void GetMajorOccurrence()
+    {
+
+        /*int v0 = 0;
+        int v1 = 0;
+        int v2 = 0;
+
+        foreach (int x in dataUserModeler)
+        {
+            if (x == 0) v0++;
+            else if (x == 1) v1++;
+            else if (x == 2) v2++;                   
+        }
+
+        if (v0 > v1 && v0 > v2) return "" + v0;
+        else if (v1 > v2 && v1 > v0) return "" + v1;
+        else if (v2 > v0 && v2 > v1) return "" + v2;
+        else if (v0 == v1) return v0 + "-" + v1;
+        else if (v0 == v2) return v0 + "-" + v2;
+        else if (v2 == v1) return v1 + "-" + v2;*/
+
+        var g = dataUserModeler.GroupBy(i => i);
+
+        foreach (var grp in g)
+        {
+            Debug.Log("Ocor : " + grp.Key + "-" + grp.Count());
+        }
+        
+        //else { return "none"; }
+        /*var most = dataUserModeler.GroupBy(i => i).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
+        Debug.Log(most);*/        
+    }
+
+
+    void GetData () {
 
 		dataPlayer = player.PlayerStatus();
 		//dataPlayer.ToList().ForEach(i => Debug.Log(i.ToString()));
@@ -304,23 +349,50 @@ public class Modeler : MonoBehaviour {
 				//counter++;
 			}
 
-			if(v1 > v2 && v1 > v3) { this.playerType =  "amateur" ;}
+			if(v1 > v2 && v1 > v3)
+            {
+                this.playerType =  "amateur" ;
+                dataUserModeler.Add(0);
+            }
 
-			else if (v2 > v1 && v2 > v3) { this.playerType =  "intermediate" ; }
+			else if (v2 > v1 && v2 > v3)
+            {
+                this.playerType =  "intermediate" ;
+                dataUserModeler.Add(1);
+            }
 
-			else if (v3 > v2 && v3 > v1) { this.playerType =  "hardcore" ; }
+			else if (v3 > v2 && v3 > v1)
+            {
+                this.playerType =  "hardcore" ;
+                dataUserModeler.Add(2);
+            }
 
-			else if (v3 == v2 && v3 == v1){
+			else if (v3 == v2 && v3 == v1)
+            {
 				qwe = modelList.ElementAt(counter);
-				if(qwe == 0) this.playerType = "amateur";
-				else if (qwe == 1) this.playerType = "intermediate";
-				else if (qwe == 2) this.playerType = "hardcore";
+                if (qwe == 0)
+                {
+                    this.playerType = "amateur";
+                    dataUserModeler.Add(0);
+                }
+                else if (qwe == 1)
+                {
+                    this.playerType = "intermediate";
+                    dataUserModeler.Add(1);
+                }
+                else if (qwe == 2)
+                {
+                    this.playerType = "hardcore";
+                    dataUserModeler.Add(2);
+                }
 			}
 
 			Debug.Log("PLayer model > " + this.playerType);
 
-	        /*Cleaning to use in another execution time, it's very important!!.*/
-			knnDic.Clear();
+            GetMajorOccurrence();
+
+            /*Cleaning to use in another execution time, it's very important!!.*/
+            knnDic.Clear();
 			modelList.Clear();
 			waveListUsed.Clear();
 			union_PlayerAndGameStatus.Clear();
