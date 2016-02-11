@@ -16,7 +16,7 @@ public class Done_GameController : MonoBehaviour{
 	public int hazardCount;
 	public float spawnWait;
 	public float startWait;
-	private float waveWait;
+	public float waveWait;
 
 	/*
 	 * Caso o usuario morra na metade da onda, ele iria passar a onda que ele morreu, prejudicando a modelagem.
@@ -98,6 +98,8 @@ public class Done_GameController : MonoBehaviour{
 
 	public WaveController waveController;
 
+	public UserDataMenu userData;
+
 	void Start (){
 
 		player = FindObjectOfType(typeof(Player)) as Player; //Porque usar ele?
@@ -124,9 +126,12 @@ public class Done_GameController : MonoBehaviour{
 		}
 
 		if (restart){
-			if (Input.GetKeyDown (KeyCode.R)){
+			/*if (Input.GetKeyDown (KeyCode.R)){
+				DontDestroyOnLoad(userData);
+
 				Application.LoadLevel (Application.loadedLevel);
-			}else if(Input.GetKeyDown (KeyCode.Home)){
+			}else */if(Input.GetKeyDown (KeyCode.Home)){
+				Destroy(userData);
 				Application.LoadLevel(1);
 			}else if (Input.GetKeyDown(KeyCode.Escape))
 				Application.Quit();
@@ -139,12 +144,19 @@ public class Done_GameController : MonoBehaviour{
 			this.todosPassaram = true;
 		}
 
+		
+		if(waveController.modeler.triggerForWaveStatus){
+			//Debug.LogWarning("Numero da onda: " + this.numeroDaOnda);
+			waveController.IncreaseWave(this.numeroDaOnda);
+			waveController.IncreasesPerWave(this.numeroDaOnda);
+		}
 	}
 
-		
+	
 	void OnGUI () {
 		if(gameOver != true){
 			if(GUI.Button(new Rect(10, 110, 80, 25), "Menu")){
+				Destroy(userData);
 				Application.LoadLevel(1);
 			}
 		}
@@ -255,19 +267,18 @@ public class Done_GameController : MonoBehaviour{
 
 				this.numeroDaOnda++;
 				//Debug.Log("Numero da onda: " + this.numeroDaOnda);
-				
-				waveController.IncreaseWave();
-					
-				waveController.IncreaseElements(this.numeroDaOnda);
 
-				foreach(float element in GameStatus()){
-					Debug.Log(element);
+				/*
+				 * Use how alternative OrganizadorDeDados() debug.
+				 * 
+				 * foreach(float element in GameStatus()){
+					Debug.Log("Element: " + element);
 				}
 
 				Debug.Log(player.MediaDelaysJogador()); //Problem when this value is -1.
 				Debug.Log(player.MediaTirosLevados());
 				Debug.Log(player.MediaCampanha100Kill());
-				Debug.Log(player.MediaCampanhaMovimentoPorSegundo());
+				Debug.Log(player.MediaCampanhaMovimentoPorSegundo());*/
 
 				Debug.Log(OrganizadorDeDados());
 			}
@@ -275,16 +286,10 @@ public class Done_GameController : MonoBehaviour{
 			// CASO A ENERGIA ACABE.
 			if (gameOver){
 
-				restartText.text = "PRESS 'R' TO RESTART \n PRESS 'HOME' TO MENU \n PRESS 'ESC' TO EXIT";
+				restartText.text = "PRESS 'HOME' TO MENU \n PRESS 'ESC' TO EXIT"; //PRESS 'R' TO RESTART \n
 
 				restart = true;
-
-				//coletor.SaveToFile(OrganizadorDeDados()); // Salvando dados ao final.
-
-				//Debug.Log(OrganizadorDeDados()); //Temporario.
-
-				player.DestruirObjetoJogador();
-
+		
 				break;
 			}
 		}
@@ -312,7 +317,7 @@ public class Done_GameController : MonoBehaviour{
 		if (this.alvosPorOnda == this.hazardCount)
 		{ 
 			this.onda100Kill += 1; //Bom.
-			Debug.Log("ONDA 100%KILL!");
+			//Debug.Log("ONDA 100%KILL!");
 		}else
 		{
 			this.onda100Kill += 0; //Ruim, nao conseguiu 100% da onda.
@@ -403,6 +408,10 @@ public class Done_GameController : MonoBehaviour{
 
 	public float GetTempoTotal () {
 		return tempoTotal;
+	}
+
+	public int GetWaveNumber(){
+		return this.numeroDaOnda;
 	}
 
 	public void SetAlvoAcertado () {

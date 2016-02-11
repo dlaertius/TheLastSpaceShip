@@ -22,11 +22,9 @@ public class Modeler : MonoBehaviour {
 	/*
 	 * Types: amateur, intermediate, hardcore.
 	 */
-	private string playerType = "";
+	private string playerType;
 
 	private int waveNumberTrigger;
-
-    private string playerLevelModeler;
 
 	private float[] smallerDistance;
 
@@ -57,6 +55,8 @@ public class Modeler : MonoBehaviour {
 
 	private float[] dataPlayer, dataGame;
 
+	public bool triggerForWaveStatus;
+
 	// Use this for initialization
 	void Start () {
 
@@ -69,31 +69,49 @@ public class Modeler : MonoBehaviour {
 
 		knnDic = new Dictionary<float, List <Database.Cell>>();
 
-        this.playerLevelModeler = "none";
+		/*
+		 *If player mode equal to "adapt", so at first iterator this will be change for a player level recomender.
+		 */
+		this.playerType  = "";
 
 		this.waveNumberTrigger =  1;
 
-		this.smallerDistance = new float[3];
-   
+		this.smallerDistance = new float[3];   
+
+		triggerForWaveStatus = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
         //trigger to calculate player level reccomender after first wave.
-        if (waveNumberTrigger != game.numeroDaOnda && game.numeroDaOnda != 1) {
-
+		if (waveNumberTrigger != game.numeroDaOnda && game.numeroDaOnda != 1) {
+			
 			//Debug.Log("Trigger used for Modeler.cs linha 30 to watch the waves alteration.");
 
-            KNN(3); //Use only three neighbors in this knn example.
+			if(player.GetGameMode().Equals("adapt")) KNN(3); //Use only three neighbors in this knn example.
 
             waveNumberTrigger = game.numeroDaOnda;
 
+			triggerForWaveStatus = true;
+
+		}else{
+			triggerForWaveStatus = false;
 		}
 	}
 
 
-	public string GetPlayerType() { return this.playerType; }
+	public string GetPlayerType() {
+		if(player.GetGameMode().Equals("adapt")){
+			return this.playerType;
+		}else{
+			return "There is no return for other game mode.";
+		}
+	}
+
+	public int GetWaveNumberTrigger(){
+		return this.waveNumberTrigger;
+	}
 
 	void GetData () {
 
@@ -201,13 +219,7 @@ public class Modeler : MonoBehaviour {
         {
 
 			try{
-				/*Debug.LogWarning ("Siz: " + this.union_PlayerAndGameStatus.Count());
-				foreach(float x in this.union_PlayerAndGameStatus){ Debug.Log("Valor UniP.: " + x);}
-				Debug.Log("-------------------");
-				Debug.LogWarning ("Siz: " + cell_values.ReturnValues().Count());
-				foreach(float x in  cell_values.ReturnValues()){ Debug.Log("Valor Return.: " + x);}*/
-				
-				
+								
 				distance = EuclideanDistance(this.union_PlayerAndGameStatus, cell_values.ReturnValues());
 				//Debug.Log("Distance: " + distance);
 			}catch (Exception e){ Debug.LogError ("Euclidean Distance problem value: " + distance +"_" + e.ToString()); }
@@ -230,11 +242,11 @@ public class Modeler : MonoBehaviour {
 
 				if(knnDic.ContainsKey(distance)){
 					knnDic[distance].Add(cell_values);
-					Debug.Log("Duplicated Key ADD");
+					//Debug.Log("Duplicated Key ADD");
 
 				}else{
 					knnDic.Add(distance, new List<Database.Cell>{cell_values});
-					Debug.Log("Everyting works fine!");
+					//Debug.Log("Everyting works fine!");
 				}
 							
 			}catch (Exception e){
@@ -273,11 +285,12 @@ public class Modeler : MonoBehaviour {
 			int counter = 0;
 			int qwe = 0;
 
-			/*foreach(int i in modelList){
+			/*Confirm what and if are elements inside list.
+			 * foreach(int i in modelList){
 				Debug.Log("List Itens: " + i);
 			}*/
 
-			while(counter < neighbors){
+			while(v1 < neighbors && v2 < neighbors && v3 < neighbors){
 				try{
 					qwe = modelList.ElementAt(counter);
 					if (qwe == 0){ v1++; }
@@ -288,16 +301,23 @@ public class Modeler : MonoBehaviour {
 				}catch{
 					Debug.LogError("Houve erro a partir. " + counter);
 				}
-				counter++;
+				//counter++;
 			}
 
-			if(v1 > v2 && v1 > v3) { this.playerLevelModeler =  "amateur" ;}
+			if(v1 > v2 && v1 > v3) { this.playerType =  "amateur" ;}
 
-			else if (v2 > v1 && v2 > v3) { this.playerLevelModeler =  "intermediate" ; }
+			else if (v2 > v1 && v2 > v3) { this.playerType =  "intermediate" ; }
 
-			else if (v3 > v2 && v3 > v1) { this.playerLevelModeler =  "hardcore" ; }
+			else if (v3 > v2 && v3 > v1) { this.playerType =  "hardcore" ; }
 
-			Debug.Log("PLayer model > " + this.playerLevelModeler);
+			else if (v3 == v2 && v3 == v1){
+				qwe = modelList.ElementAt(counter);
+				if(qwe == 0) this.playerType = "amateur";
+				else if (qwe == 1) this.playerType = "intermediate";
+				else if (qwe == 2) this.playerType = "hardcore";
+			}
+
+			Debug.Log("PLayer model > " + this.playerType);
 
 	        /*Cleaning to use in another execution time, it's very important!!.*/
 			knnDic.Clear();

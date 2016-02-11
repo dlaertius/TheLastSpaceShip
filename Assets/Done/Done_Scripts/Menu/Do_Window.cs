@@ -49,10 +49,10 @@ public class Do_Window : MonoBehaviour {
 			GUI.Label(new Rect(60,135,220,30), "Choose a difficulty level!");
 		}
 		
-		toogleEasy = GUI.Toggle(new Rect(30,70, 100, 30), toogleEasy, "Easy");
-		toogleMed = GUI.Toggle(new Rect(80,70, 100, 30), toogleMed, "Medium");
-		toogleHard = GUI.Toggle(new Rect(150,70, 100, 30), toogleHard, "Hard");
-		toogleAdap = GUI.Toggle(new Rect(200,70, 100, 30), toogleAdap, "Adaptable");
+		toogleEasy = GUI.Toggle(new Rect(30,70, 100, 30), toogleEasy, "W");
+		toogleMed = GUI.Toggle(new Rect(80,70, 100, 30), toogleMed, "Y");
+		toogleHard = GUI.Toggle(new Rect(150,70, 100, 30), toogleHard, "X");
+		toogleAdap = GUI.Toggle(new Rect(200,70, 100, 30), toogleAdap, "V");
 		
 		
 		if(toogleAdap)

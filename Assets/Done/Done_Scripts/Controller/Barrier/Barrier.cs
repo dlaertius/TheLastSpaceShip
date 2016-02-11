@@ -22,7 +22,11 @@ public class Barrier : MonoBehaviour {
 	
 	void OnTriggerEnter (Collider other) 
 	{
-		
+
+		if (other.tag == "Player"){
+			return;
+		}
+
 		/*	Apparently this solutions worked.
 		 * Aparentemente essa soluçao funcionou.
 		 *
