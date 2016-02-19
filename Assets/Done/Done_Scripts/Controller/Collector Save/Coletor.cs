@@ -12,10 +12,14 @@ public class Coletor : MonoBehaviour {
 	private string caminhoArquivo;
 	
 	void Awake() {
-		caminhoArquivo = Application.persistentDataPath + " Coletor.csv"; // Pegando o caminho certo.
-		//Debug.Log(caminhoArquivo);
+		caminhoArquivo = Application.persistentDataPath + " DataUserModeler.csv"; // Take the right way to Colect csv file.
+//		caminhoArquivo = Application.persistentDataPath + " Coletor.csv"; // Take the right way to Colect csv file.
+		Debug.Log(caminhoArquivo);
 	}
-	
+
+	/*
+	 * Used in the first step of this project to colect players data.
+	 */
 	public void SaveToFile(string dados){
 		//Se o arquivo ja existir.
 		if(File.Exists (caminhoArquivo)) {
@@ -38,7 +42,6 @@ public class Coletor : MonoBehaviour {
 			}
 		}
 	}
-	
 	//Para ler os dados dos jogos no box da coleta(Menu)
 	public string ReadFromFile(){
 		
@@ -91,5 +94,24 @@ public class Coletor : MonoBehaviour {
 			}
 		}
 		return (linha_atual + "\n");
+	}
+
+	public void SaveToFileRecomenationsLine(string recommendationsDuringGame, string MajorOccurrence) {
+		//Se o arquivo ja existir.
+		if(File.Exists (caminhoArquivo)) {
+			using (StreamWriter sw = new StreamWriter(caminhoArquivo,true)){
+				sw.WriteLine ("During Game: " + recommendationsDuringGame + "| Major Occurrence: " + MajorOccurrence);
+				sw.Close ();	
+			} 
+		}
+		//Se nao existir o arquivo, ele e criado.
+		else{
+			using(FileStream fs = File.Create(caminhoArquivo)){
+				using (StreamWriter sw = new StreamWriter(fs)){
+					sw.WriteLine ("During Game: " + recommendationsDuringGame + "| Major Occurrence: " + MajorOccurrence);
+					sw.Close ();
+				}
+			}
+		}
 	}
 }

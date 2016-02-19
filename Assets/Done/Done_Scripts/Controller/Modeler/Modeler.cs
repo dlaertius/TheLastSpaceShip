@@ -124,38 +124,47 @@ public class Modeler : MonoBehaviour {
 		return this.waveNumberTrigger;
 	}
 
-    public void GetMajorOccurrence()
+    public string GetMajorOccurrence()
     {
 
-        /*int v0 = 0;
-        int v1 = 0;
-        int v2 = 0;
-
-        foreach (int x in dataUserModeler)
-        {
-            if (x == 0) v0++;
-            else if (x == 1) v1++;
-            else if (x == 2) v2++;                   
-        }
-
-        if (v0 > v1 && v0 > v2) return "" + v0;
-        else if (v1 > v2 && v1 > v0) return "" + v1;
-        else if (v2 > v0 && v2 > v1) return "" + v2;
-        else if (v0 == v1) return v0 + "-" + v1;
-        else if (v0 == v2) return v0 + "-" + v2;
-        else if (v2 == v1) return v1 + "-" + v2;*/
+		int v0 = 0;
+		int v1 = 0;
+		int v2 = 0;
 
         var g = dataUserModeler.GroupBy(i => i);
 
         foreach (var grp in g)
         {
-            Debug.Log("Ocor : " + grp.Key + "-" + grp.Count());
+			if(grp.Key == 0)
+			{
+				v0 = grp.Count();
+			}
+			else if(grp.Key == 1)
+			{
+				v1 = grp.Count();
+			}
+			else{
+				v2 = grp.Count();
+			}
+			//Debug.Log("Ocor : " + grp.Key + "-" + grp.Count());
         }
         
-        //else { return "none"; }
-        /*var most = dataUserModeler.GroupBy(i => i).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
-        Debug.Log(most);*/        
+		//Debug.Log("V0: " + v0 + " - V1: " + v1 + " - V2: " + v2);
+
+		return "V0: " + v0 + " - V1: " + v1 + " - V2: " + v2;   
     }
+
+	public string GetDataUserModelerList () 
+	{
+		string s = "";
+		for(int x = 0; x < dataUserModeler.Count(); x++){
+			if (x == 0) s += dataUserModeler.IndexOf(x) + "";
+			else if (x == dataUserModeler.Count - 1) s += dataUserModeler.IndexOf(x) + "";
+			else s+= dataUserModeler.IndexOf(x) + ",";
+		}
+
+		return s;
+	}
 
 
     void GetData () {
@@ -389,7 +398,7 @@ public class Modeler : MonoBehaviour {
 
 			Debug.Log("PLayer model > " + this.playerType);
 
-            GetMajorOccurrence();
+			Debug.LogWarning(GetMajorOccurrence());
 
             /*Cleaning to use in another execution time, it's very important!!.*/
             knnDic.Clear();

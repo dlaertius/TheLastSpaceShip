@@ -1,14 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Done\Done_Scripts\Menu\Do_Window.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Done\Done_Scripts\Controller\Collector Save\Coletor.cs">
     <Files>
-      <File FileName="Assets\Done\Done_Scripts\Controller\Wave\WaveController.cs" Line="154" Column="1" />
-      <File FileName="Assets\Done\Done_Scripts\Controller\Modeler\Modeler.cs" Line="290" Column="35" />
-      <File FileName="Assets\Done\Done_Scripts\Asset Unity Done\Done_GameController.cs" Line="233" Column="33" />
-      <File FileName="Assets\Done\Done_Scripts\Asset Unity Done\Done_DestroyByContact.cs" Line="39" Column="1" />
-      <File FileName="Assets\Done\Done_Scripts\Controller\Barrier\Barrier.cs" Line="27" Column="11" />
-      <File FileName="Assets\Done\Done_Scripts\Menu\Done_Menu.cs" Line="1" Column="1" />
-      <File FileName="Assets\Done\Done_Scripts\Menu\Do_Window.cs" Line="57" Column="3" />
+      <File FileName="Assets\Done\Done_Scripts\Controller\Wave\WaveController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Done\Done_Scripts\Controller\Modeler\Modeler.cs" Line="157" Column="38" />
+      <File FileName="Assets\Done\Done_Scripts\Asset Unity Done\Done_GameController.cs" Line="296" Column="41" />
+      <File FileName="Assets\Done\Done_Scripts\Controller\Collector Save\Coletor.cs" Line="12" Column="32" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

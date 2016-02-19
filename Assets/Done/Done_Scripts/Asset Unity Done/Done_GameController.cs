@@ -140,7 +140,12 @@ public class Done_GameController : MonoBehaviour{
 
 			if (!this.todosPassaram) Debug.Log ("Já pode passar!");
 
+			Debug.LogWarning("elementosQueCruzaramAFronteira" + this.elementosQueCruzaramAFronteira + "- alvosPorOnda:" +
+			                "" + this.alvosPorOnda + " - hazardCount:" + this.hazardCount);
+
 			this.todosPassaram = true;
+
+			this.elementosQueCruzaramAFronteira = 0;
 		}
 
 		
@@ -201,7 +206,7 @@ public class Done_GameController : MonoBehaviour{
 
 			for (int i = 0; i < hazardCount; i++)
 			{
-				if(!gameOver){
+				if(!gameOver && !todosPassaram){
 					
 					int setando = Random.Range(0,2); //Mob escolhido aleatoriamente.
 					int mobCorrente = 0;
@@ -249,18 +254,13 @@ public class Done_GameController : MonoBehaviour{
 				while(!x){
 
 					if(todosPassaram){
-						this.elementosQueCruzaramAFronteira = 0;
 						break;
 					}else{
 						this.contaDelay = true;
 						yield return new WaitForSeconds(1);
 						this.contaDelay = false;
 					}
-
-					Debug.LogError ("elementosQueCruzaramAFronteira" + this.elementosQueCruzaramAFronteira + "- alvosPorOnda:" +
-					                "" + this.alvosPorOnda + " - hazardCount:" + this.hazardCount);
 				}
-
 			}
 
 			if (!gameOver){ 
@@ -291,6 +291,9 @@ public class Done_GameController : MonoBehaviour{
 			if (gameOver){
 
 				restartText.text = "PRESS 'HOME' TO MENU \n PRESS 'ESC' TO EXIT"; //PRESS 'R' TO RESTART \n
+				scoreText.text += "\n" + waveController.modeler.GetMajorOccurrence();
+
+				coletor.SaveToFileRecomenationsLine(waveController.modeler.GetDataUserModelerList(),waveController.modeler.GetMajorOccurrence());
 
 				restart = true;
 		
