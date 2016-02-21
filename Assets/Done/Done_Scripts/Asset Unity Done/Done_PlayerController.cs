@@ -37,6 +37,34 @@ public class Done_PlayerController : MonoBehaviour
 
 		StatusShip();
 
+		if(gameControle.triggrForLevelCountDelay)
+		{
+			
+			/* Used to verify the bigger delay.
+				 * Usado para verificar qual o maior delay do jogador.
+				 */
+			player.VerificaMaiorDelay(gameControle.GetTempoTotal());
+			
+			/* Used to calculate IF fire rate time was > 3 seconds, so it's a delay.
+				 * Usado para calcular se o tempo de tiro foi > 3 segundos, entao e um delay.
+				 */
+			player.CalculaDelays(gameControle.GetTempoTotal());
+			
+			/* Used to controll this time - the new time when the player shot.
+				 * Usado para controlar o tempo dos delays, uma vez que quando o jogador atirar e so subtrair pelo anterior.
+				 */
+			player.tempoDoUltimoDisparo = gameControle.GetTempoTotal();
+			
+			gameControle.triggrForLevelCountDelay = false;
+				
+			
+			/*Used to confirm that players delay will be the right.
+			 * 
+			 * foreach(float x in player.PlayerStatus()){
+				Debug.Log(": " + x);
+			}*/
+		}
+
 		if (Input.GetKeyDown("space") && Time.time > nextFire) {
 
 			nextFire = Time.time + fireRate;
@@ -51,9 +79,10 @@ public class Done_PlayerController : MonoBehaviour
 			{
 				player.tempoDoUltimoDisparo = gameControle.GetTempoTotal();
 
-			}else if (gameControle.contaDelay == false)
+			}
+			else if (gameControle.contaDelay == false)
 			{
-
+			
 				/* Used to verify the bigger delay.
 				 * Usado para verificar qual o maior delay do jogador.
 				 */

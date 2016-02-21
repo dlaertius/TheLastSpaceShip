@@ -170,11 +170,7 @@ public class Player : MonoBehaviour {
 
 	public float MediaDelaysJogador () 
 	{
-		if(this.tirosDisparados < 2)
-		{
-			return (-1.0f); //Não efetuou nenhum tiro.
-		}
-		else return (CalculaTaxaGenericaFloat(this.somaDosDelays, this.quantidadeDeDelays));
+		return (CalculaTaxaGenericaFloat(this.somaDosDelays, this.quantidadeDeDelays));
 	}
 	
 	/*

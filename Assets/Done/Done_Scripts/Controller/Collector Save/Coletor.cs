@@ -100,7 +100,7 @@ public class Coletor : MonoBehaviour {
 		//Se o arquivo ja existir.
 		if(File.Exists (caminhoArquivo)) {
 			using (StreamWriter sw = new StreamWriter(caminhoArquivo,true)){
-				sw.WriteLine ("During Game: " + recommendationsDuringGame + "| Major Occurrence: " + MajorOccurrence);
+				sw.WriteLine ("During Game: " + recommendationsDuringGame + " Major Occurrence: " + MajorOccurrence);
 				sw.Close ();	
 			} 
 		}
@@ -108,7 +108,7 @@ public class Coletor : MonoBehaviour {
 		else{
 			using(FileStream fs = File.Create(caminhoArquivo)){
 				using (StreamWriter sw = new StreamWriter(fs)){
-					sw.WriteLine ("During Game: " + recommendationsDuringGame + "| Major Occurrence: " + MajorOccurrence);
+					sw.WriteLine ("During Game: " + recommendationsDuringGame + " Major Occurrence: " + MajorOccurrence);
 					sw.Close ();
 				}
 			}

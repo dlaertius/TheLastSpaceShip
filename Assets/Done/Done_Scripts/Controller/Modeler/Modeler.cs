@@ -157,10 +157,9 @@ public class Modeler : MonoBehaviour {
 	public string GetDataUserModelerList () 
 	{
 		string s = "";
-		for(int x = 0; x < dataUserModeler.Count(); x++){
-			if (x == 0) s += dataUserModeler.IndexOf(x) + "";
-			else if (x == dataUserModeler.Count - 1) s += dataUserModeler.IndexOf(x) + "";
-			else s+= dataUserModeler.IndexOf(x) + ",";
+
+		foreach(int a in dataUserModeler){
+			s += a + "|";
 		}
 
 		return s;
@@ -170,7 +169,7 @@ public class Modeler : MonoBehaviour {
     void GetData () {
 
 		dataPlayer = player.PlayerStatus();
-		//dataPlayer.ToList().ForEach(i => Debug.Log(i.ToString()));
+		dataPlayer.ToList().ForEach(i => Debug.Log("Data Player List: " + i.ToString())); //Used to confirm player dela per wave only.
 
 		dataGame = game.GameStatus();
 		//dataGame.ToList().ForEach(i => Debug.Log(i.ToString()));

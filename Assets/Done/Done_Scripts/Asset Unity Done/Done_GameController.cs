@@ -82,6 +82,11 @@ public class Done_GameController : MonoBehaviour{
 	public bool contaDelay = false;
 
 	/*
+	 * Usado para que quando passe de uma onda para outra, caso o usuario nao efetue nenhum tiro ele conte o delay dele, da onda, e continue a somar.
+	 */
+	public bool triggrForLevelCountDelay = false;
+
+	/*
 	 * Usada para nao evitar que uma onda venha antes de ter acabado a outra.
 	 */
 	public bool todosPassaram = true;
@@ -265,6 +270,8 @@ public class Done_GameController : MonoBehaviour{
 
 			if (!gameOver){ 
 
+				this.triggrForLevelCountDelay = true;
+
 				this.numeroDaOndaParaMedia = this.numeroDaOnda;
 
 				Onda100KillConfirma();
@@ -277,14 +284,9 @@ public class Done_GameController : MonoBehaviour{
 				 * 
 				 * foreach(float element in GameStatus()){
 					Debug.Log("Element: " + element);
-				}
+				}*/
 
-				Debug.Log(player.MediaDelaysJogador()); //Problem when this value is -1.
-				Debug.Log(player.MediaTirosLevados());
-				Debug.Log(player.MediaCampanha100Kill());
-				Debug.Log(player.MediaCampanhaMovimentoPorSegundo());*/
-
-				Debug.Log(OrganizadorDeDados());
+				//Debug.Log(OrganizadorDeDados());
 			}
 			
 			// CASO A ENERGIA ACABE.
@@ -293,7 +295,10 @@ public class Done_GameController : MonoBehaviour{
 				restartText.text = "PRESS 'HOME' TO MENU \n PRESS 'ESC' TO EXIT"; //PRESS 'R' TO RESTART \n
 				scoreText.text += "\n" + waveController.modeler.GetMajorOccurrence();
 
-				coletor.SaveToFileRecomenationsLine(waveController.modeler.GetDataUserModelerList(),waveController.modeler.GetMajorOccurrence());
+				/*
+				 * Save only players data in adaptative mode.
+				 */
+				if (player.GetGameMode().Equals("adapt")) coletor.SaveToFileRecomenationsLine(waveController.modeler.GetDataUserModelerList(),waveController.modeler.GetMajorOccurrence());
 
 				restart = true;
 		
@@ -373,7 +378,8 @@ public class Done_GameController : MonoBehaviour{
 	
 	public string OrganizadorDeDados () 
 	{
-		return (this.numeroDaOnda + "," + player.CalculaTaxaGenerica(this.totalDeNavesDestruidas,this.navesTotais) + ","
+		//(this.numeroDaOnda-1), cause it's called after add + in wave number.
+		return ((this.numeroDaOnda-1) + "," + player.CalculaTaxaGenerica(this.totalDeNavesDestruidas,this.navesTotais) + ","
 		        + player.CalculaTaxaGenerica(this.totalDeAsteroidesDestruidos, this.asteroidesTotais) + "," + 
 		        player.CalculaTaxaGenerica(this.navesColididas,this.navesTotais) + "," + player.CalculaTaxaGenerica(this.asteroidesColididos, this.asteroidesTotais)
 		        + "," + player.MediaDelaysJogador() + "," + player.MediaTirosLevados() + "," + player.MediaCampanha100Kill() + "," + player.MediaCampanhaMovimentoPorSegundo() + "," + this.player.GetNomeJogador());
