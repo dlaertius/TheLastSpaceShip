@@ -158,6 +158,7 @@ public class Done_GameController : MonoBehaviour{
 			//Debug.LogWarning("Numero da onda: " + this.numeroDaOnda);
 			waveController.IncreaseWave(this.numeroDaOnda);
 			waveController.IncreasesPerWave(this.numeroDaOnda);
+			//Debug.Log(player.MediaDelaysJogador());
 		}
 
         if (finishGame) {
@@ -276,6 +277,8 @@ public class Done_GameController : MonoBehaviour{
 
 				Onda100KillConfirma();
 
+				if (player.GetGameMode().Equals("med")) coletor.SaveToFile(OrganizadorDeDados());
+
 				this.numeroDaOnda++;
 				//Debug.Log("Numero da onda: " + this.numeroDaOnda);
 
@@ -368,7 +371,8 @@ public class Done_GameController : MonoBehaviour{
 	 * A versao original usou valores double.
 	 */
 	public float[] GameStatus(){
-		float[] gameStatusPlayer = {player.CalculaTaxaGenerica(this.totalDeNavesDestruidas,this.navesTotais), 
+
+		float[] gameStatusPlayer = {/*score, (player.GetVidaJogador()/100),*/player.CalculaTaxaGenerica(this.totalDeNavesDestruidas,this.navesTotais), 
 			player.CalculaTaxaGenerica(this.totalDeAsteroidesDestruidos, this.asteroidesTotais),
 			player.CalculaTaxaGenerica(this.navesColididas,this.navesTotais),player.CalculaTaxaGenerica(this.asteroidesColididos, this.asteroidesTotais)};
 		
@@ -378,8 +382,7 @@ public class Done_GameController : MonoBehaviour{
 	
 	public string OrganizadorDeDados () 
 	{
-		//(this.numeroDaOnda-1), cause it's called after add + in wave number.
-		return ((this.numeroDaOnda-1) + "," + player.CalculaTaxaGenerica(this.totalDeNavesDestruidas,this.navesTotais) + ","
+		return (waveController.modeler.Normalize(score, 7460,0) + "," + (player.CalculaTaxaGenericaFloat((float) player.GetVidaJogador(),100)) + "," +  player.CalculaTaxaGenerica(this.totalDeNavesDestruidas,this.navesTotais) + ","
 		        + player.CalculaTaxaGenerica(this.totalDeAsteroidesDestruidos, this.asteroidesTotais) + "," + 
 		        player.CalculaTaxaGenerica(this.navesColididas,this.navesTotais) + "," + player.CalculaTaxaGenerica(this.asteroidesColididos, this.asteroidesTotais)
 		        + "," + player.MediaDelaysJogador() + "," + player.MediaTirosLevados() + "," + player.MediaCampanha100Kill() + "," + player.MediaCampanhaMovimentoPorSegundo() + "," + this.player.GetNomeJogador());

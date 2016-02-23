@@ -9,12 +9,14 @@ public class Coletor : MonoBehaviour {
 	//Utilizado para poder imprimir o resultado mais recente.
 	private Stack<String> pilha = new Stack<String>();
 	
-	private string caminhoArquivo;
+	private string caminhoArquivoModeler;
+	private string caminhoArquivoTrainning;
 	
 	void Awake() {
-		caminhoArquivo = Application.persistentDataPath + " DataUserModeler.csv"; // Take the right way to Colect csv file.
-//		caminhoArquivo = Application.persistentDataPath + " Coletor.csv"; // Take the right way to Colect csv file.
-		Debug.Log(caminhoArquivo);
+		caminhoArquivoModeler = Application.persistentDataPath + " DataUserModeler.csv"; // Take the right way to Colect csv file.
+		caminhoArquivoTrainning = Application.persistentDataPath + " Colector.csv"; // Take the right way to Colect csv file.
+		Debug.Log(caminhoArquivoModeler);
+		Debug.Log(caminhoArquivoTrainning);
 	}
 
 	/*
@@ -22,18 +24,18 @@ public class Coletor : MonoBehaviour {
 	 */
 	public void SaveToFile(string dados){
 		//Se o arquivo ja existir.
-		if(File.Exists (caminhoArquivo)) {
-			using (StreamWriter sw = new StreamWriter(caminhoArquivo,true)){
+		if(File.Exists (caminhoArquivoTrainning)) {
+			using (StreamWriter sw = new StreamWriter(caminhoArquivoTrainning,true)){
 				sw.WriteLine (dados);
 				sw.Close ();	
 			} 
 		}
 		//Se nao existir o arquivo, ele e criado.
 		else{
-			using(FileStream fs = File.Create(caminhoArquivo)){
+			using(FileStream fs = File.Create(caminhoArquivoTrainning)){
 				using (StreamWriter sw = new StreamWriter(fs)){
 					sw.WriteLine ("sep=,");
-					sw.WriteLine ("NumeroOnda, TaxaExterminioNaves, TaxaExterminioAsteroides, TaxaColisaoNaves, TaxaColisaoAsteroides, " +
+					sw.WriteLine ("Score, Energia, TaxaExterminioNaves, TaxaExterminioAsteroides, TaxaColisaoNaves, TaxaColisaoAsteroides, " +
 						"DelayTiro, TirosAlvejados, UltimaCampanha100Kill, " +
 						"QuantidadeMovimentos, NomeCapitao");
 					sw.WriteLine (dados);
@@ -49,14 +51,14 @@ public class Coletor : MonoBehaviour {
 		string coleta = "";
 		
 		//Pega o caminho do arquivo e le ate que nao reste mais nada a ser lido.
-		if(File.Exists(caminhoArquivo)){
+		if(File.Exists(caminhoArquivoTrainning)){
 			try{
-				using (StreamReader sr = new StreamReader(caminhoArquivo)){
+				using (StreamReader sr = new StreamReader(caminhoArquivoTrainning)){
 					string linha;
 					while((linha = sr.ReadLine())!= null){
-						if(linha.Equals("sep=,") || linha.Equals("NumeroOnda, TaxaExterminioNaves, TaxaExterminioAsteroides, TaxaColisaoNaves, TaxaColisaoAsteroides, " +
+						if(linha.Equals("sep=,") || linha.Equals("Score, Energia, TaxaExterminioNaves, TaxaExterminioAsteroides, TaxaColisaoNaves, TaxaColisaoAsteroides, " +
 						                                         "DelayTiro, TirosAlvejados, UltimaCampanha100Kill, " +
-						                                         "QuantidadeMovimentos,NomeCapitao")){
+						                                         "QuantidadeMovimentos, NomeCapitao")){
 							continue;
 						}else{
 							//Gatilho para finalizr a insercao de itens na pilha.
@@ -98,15 +100,15 @@ public class Coletor : MonoBehaviour {
 
 	public void SaveToFileRecomenationsLine(string recommendationsDuringGame, string MajorOccurrence) {
 		//Se o arquivo ja existir.
-		if(File.Exists (caminhoArquivo)) {
-			using (StreamWriter sw = new StreamWriter(caminhoArquivo,true)){
+		if(File.Exists (caminhoArquivoModeler)) {
+			using (StreamWriter sw = new StreamWriter(caminhoArquivoModeler,true)){
 				sw.WriteLine ("During Game: " + recommendationsDuringGame + " Major Occurrence: " + MajorOccurrence);
 				sw.Close ();	
 			} 
 		}
 		//Se nao existir o arquivo, ele e criado.
 		else{
-			using(FileStream fs = File.Create(caminhoArquivo)){
+			using(FileStream fs = File.Create(caminhoArquivoModeler)){
 				using (StreamWriter sw = new StreamWriter(fs)){
 					sw.WriteLine ("During Game: " + recommendationsDuringGame + " Major Occurrence: " + MajorOccurrence);
 					sw.Close ();

@@ -15,7 +15,7 @@ public class WaveController : MonoBehaviour {
 	 * Atributos Iniciais da Nave Roxa. (ESTATICOS)
 	 * 
 	 */
-	public int scoreValue_NaveRoxa = 21;
+	public int scoreValue_NaveRoxa = 20;
 	public float fireRateNave_Roxa = 1.5f;
 	public float delayNave_Roxa = 1.5f;
 	public float speedNave_Roxa = -4.0f;

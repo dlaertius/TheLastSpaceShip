@@ -183,6 +183,17 @@ public class Modeler : MonoBehaviour {
 
 	void ProcessingData(){
 
+		/*
+		 * Se aprovado
+		 * 
+		 * 
+		//Score.
+		float normalizeValue_Score = Normalize((float)dataPlayer[0], 7460.0f, 0.0f);
+		//Debug.Log("Delay Normalized - After/Before: " + normalizeValue_Delay + "-" + dataPlayer[0]);
+		this.dataPlayer[0] = normalizeValue_Score;
+		 */
+
+
 		//ShotDelay - DelayTiro.
 		float normalizeValue_Delay = Normalize((float)dataPlayer[0], 23.0f, 0.0f);
 		//Debug.Log("Delay Normalized - After/Before: " + normalizeValue_Delay + "-" + dataPlayer[0]);
@@ -200,7 +211,7 @@ public class Modeler : MonoBehaviour {
 	 * 
 	 */
 
-	float Normalize(float value, float valueMax, float valueMin){
+	public float Normalize(float value, float valueMax, float valueMin){
 		return ((value - valueMin)/valueMax);
 	}
 
