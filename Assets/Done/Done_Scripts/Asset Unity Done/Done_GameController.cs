@@ -145,8 +145,8 @@ public class Done_GameController : MonoBehaviour{
 
 			if (!this.todosPassaram) Debug.Log ("Já pode passar!");
 
-			Debug.LogWarning("elementosQueCruzaramAFronteira" + this.elementosQueCruzaramAFronteira + "- alvosPorOnda:" +
-			                "" + this.alvosPorOnda + " - hazardCount:" + this.hazardCount);
+			//Debug.LogWarning("elementosQueCruzaramAFronteira" + this.elementosQueCruzaramAFronteira + "- alvosPorOnda:" +
+			  //              "" + this.alvosPorOnda + " - hazardCount:" + this.hazardCount);
 
 			this.todosPassaram = true;
 

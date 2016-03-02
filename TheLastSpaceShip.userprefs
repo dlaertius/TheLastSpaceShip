@@ -1,12 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Controller\Collector Save\Coletor.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Controller\Modeler\Modeler.cs">
     <Files>
-      <File FileName="Assets\Done\Done_Scripts\Asset Unity Done\Done_GameController.cs" Line="167" Column="10" />
-      <File FileName="Assets\Scripts\Controller\Player\Player.cs" Line="157" Column="39" />
-      <File FileName="Assets\Done\Done_Scripts\Asset Unity Done\Done_PlayerController.cs" Line="102" Column="5" />
-      <File FileName="Assets\Scripts\Controller\Modeler\Modeler.cs" Line="208" Column="2" />
-      <File FileName="Assets\Scripts\Controller\Collector Save\Coletor.cs" Line="40" Column="30" />
+      <File FileName="Assets\Scripts\Controller\Modeler\Modeler.cs" Line="294" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

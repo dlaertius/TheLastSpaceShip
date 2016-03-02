@@ -43,6 +43,8 @@ public class Player : MonoBehaviour {
 	void Start () {
 
 		game = FindObjectOfType(typeof(Done_GameController)) as Done_GameController;
+
+		this.somaDosDelays = 0;
 		
 	}
 	

@@ -26,8 +26,6 @@ public class Modeler : MonoBehaviour {
 
 	private int waveNumberTrigger;
 
-	private float[] smallerDistance;
-
 	private float distance;
 
     private List<float> union_PlayerAndGameStatus;
@@ -43,6 +41,7 @@ public class Modeler : MonoBehaviour {
 	 * Local List used in method only.
 	 */
 
+	private List<float> distancesValuesSort;
 	
 	private List<int> modelList;
 	
@@ -76,14 +75,14 @@ public class Modeler : MonoBehaviour {
 
         knnDic = new Dictionary<float, List <Database.Cell>>();
 
+		distancesValuesSort = new List<float>();
+
 		/*
 		 *If player mode equal to "adapt", so at first iterator this will be change for a player level recomender.
 		 */
 		this.playerType  = "";
 
 		this.waveNumberTrigger =  1;
-
-		this.smallerDistance = new float[3];   
 
 		triggerForWaveStatus = false;
 	}
@@ -96,7 +95,7 @@ public class Modeler : MonoBehaviour {
 			
 			//Debug.Log("Trigger used for Modeler.cs linha 30 to watch the waves alteration.");
 
-			if(player.GetGameMode().Equals("adapt")) KNN(3); //Use only three neighbors in this knn example.
+			if(player.GetGameMode().Equals("adapt")) KNN(5); //Use only three neighbors in this knn example.
 
             waveNumberTrigger = game.numeroDaOnda;
 
@@ -107,7 +106,7 @@ public class Modeler : MonoBehaviour {
 		}
 	}
 
-
+	//---------------------------------------------------------------------------------
 	public string GetPlayerType()
     {
 		if(player.GetGameMode().Equals("adapt"))
@@ -119,11 +118,13 @@ public class Modeler : MonoBehaviour {
 		}
 	}
 
+	//---------------------------------------------------------------------------------
 	public int GetWaveNumberTrigger()
     {
 		return this.waveNumberTrigger;
 	}
 
+	//---------------------------------------------------------------------------------
     public string GetMajorOccurrence()
     {
 
@@ -154,6 +155,7 @@ public class Modeler : MonoBehaviour {
 		return "V0: " + v0 + " - V1: " + v1 + " - V2: " + v2;   
     }
 
+	//---------------------------------------------------------------------------------
 	public string GetDataUserModelerList () 
 	{
 		string s = "";
@@ -165,11 +167,11 @@ public class Modeler : MonoBehaviour {
 		return s;
 	}
 
-
+	//---------------------------------------------------------------------------------
     void GetData () {
 
 		dataPlayer = player.PlayerStatus();
-		dataPlayer.ToList().ForEach(i => Debug.Log("Data Player List: " + i.ToString())); //Used to confirm player dela per wave only.
+		//dataPlayer.ToList().ForEach(i => Debug.Log("Data Player List: " + i.ToString())); //Used to confirm player dela per wave only.
 
 		dataGame = game.GameStatus();
 		//dataGame.ToList().ForEach(i => Debug.Log(i.ToString()));
@@ -181,21 +183,11 @@ public class Modeler : MonoBehaviour {
 
     }
 
+	//---------------------------------------------------------------------------------
 	void ProcessingData(){
 
-		/*
-		 * Se aprovado
-		 * 
-		 * 
-		//Score.
-		float normalizeValue_Score = Normalize((float)dataPlayer[0], 7460.0f, 0.0f);
-		//Debug.Log("Delay Normalized - After/Before: " + normalizeValue_Delay + "-" + dataPlayer[0]);
-		this.dataPlayer[0] = normalizeValue_Score;
-		 */
-
-
 		//ShotDelay - DelayTiro.
-		float normalizeValue_Delay = Normalize((float)dataPlayer[0], 23.0f, 0.0f);
+		float normalizeValue_Delay = Normalize((float)dataPlayer[0], 13.0f, 0.0f);
 		//Debug.Log("Delay Normalized - After/Before: " + normalizeValue_Delay + "-" + dataPlayer[0]);
 		this.dataPlayer[0] = normalizeValue_Delay;
 
@@ -210,12 +202,12 @@ public class Modeler : MonoBehaviour {
 	 * E necessario apenas normalizar moviPorSegundo e QntDelay, pois os demais ja sao de 0 a 1 .
 	 * 
 	 */
-
+	//---------------------------------------------------------------------------------
 	public float Normalize(float value, float valueMax, float valueMin){
 		return ((value - valueMin)/valueMax);
 	}
 
-
+	//---------------------------------------------------------------------------------
 	/*
 	 * @input: (1) A list with actual player. (2) An array from players dataset.
 	 * @output: Distance euclidean between their status combined.
@@ -232,18 +224,117 @@ public class Modeler : MonoBehaviour {
 		return Mathf.Sqrt(euclideanDistance);
 	}
 
+	//---------------------------------------------------------------------------------
+	void Verify (int v1, int v2, int v3, int qwe, int neighbors){
+
+		try{
+			if(v1 > v2 && v1 > v3)
+			{
+				this.playerType =  "amateur" ;
+				dataUserModeler.Add(0);
+			}
+			
+			else if (v2 > v1 && v2 > v3)
+			{
+				this.playerType =  "intermediate" ;
+				dataUserModeler.Add(1);
+			}
+			
+			else if (v3 > v2 && v3 > v1)
+			{
+				this.playerType =  "hardcore" ;
+				dataUserModeler.Add(2);
+			}
+			
+			/*
+			 * Specify here a solution to problem if the classifier returned 3 different modes.
+			 * In this solution above we use a k equals a random number between the old neighbors and the math.sqrt value from the size of list.
+			 * 
+			 */
+			else if (v3 == v2 || v3 == v1 || v2 == v1)
+			{
+				Debug.Log("Equal!");
+
+				int newNeighbors = UnityEngine.Random.Range(neighbors + 2, (int) Math.Sqrt(waveListUsed.Count()));
+
+				Debug.Log("Random newNeighbors: " + newNeighbors);
+
+				modelList.Clear();
+
+				LoadingByDistance(newNeighbors);
+
+				int counter = 0;
+
+				while(counter < newNeighbors){
+					qwe = modelList.ElementAt(counter);
+					if (qwe == 0){ v1++; }
+					else if (qwe == 1) { v2++; }
+					else {v3++;}
+					Debug.Log(qwe);
+					counter++;
+				}
+				
+				Verify(v1,v2,v3,qwe,newNeighbors);
+			}
+		}catch(Exception e) {
+			Debug.LogError("Verify problem.");
+			Debug.LogError(e.ToString());
+		}
+	}
+
+	//---------------------------------------------------------------------------------
+	void LoadingByDistance (int neighbors) {
+
+		int counter = 0;
+		int index = 0;
+
+		while(counter < neighbors){
+			
+			try{
+				
+				if(knnDic.TryGetValue(distancesValuesSort.ElementAt(index), out value1)){
+					
+					foreach(Database.Cell z in value1){ 										
+						
+						if(counter >= neighbors) break;
+						
+						if (counter < neighbors) { 
+							
+							modelList.Add(z.GetCellModelLevel()); 
+							counter++ ; 
+						} 
+					}						
+					
+					value1.Clear();
+					index++;
+					
+				}
+				
+				else
+				{
+					index++;
+				}
+				
+			}catch(Exception e) {
+				Debug.LogWarning("Error in get and add value in model list."); 
+				Debug.LogError(e.ToString());
+			}
+		}
+	}
+
+	//---------------------------------------------------------------------------------
 	void KNN(int neighbors){
 
-        //Get Player and Game data.
+		modelList = new List<int>();
+		
+		/*
+		 *Get Player and Game data. 
+		 */
 		try{
-        	GetData();
-			this.smallerDistance[0] = 100;
-			this.smallerDistance[1] = 100;
-			this.smallerDistance[2] = 100;
-			
-		}catch{ Debug.LogError("Cannot possible get data or initialize smaller distance array."); }
+			GetData();			
+		}catch{ Debug.LogError("Cannot possible get data."); }
 
-        /*
+       /*
         * Union two arrays, GameStatus and PlayerStatus;
         */
 
@@ -275,10 +366,10 @@ public class Modeler : MonoBehaviour {
 
 		}catch{ Debug.LogError("Cannot possible load cell info per wave. "); }
 
-/*
-* Moving into Cells data and calculate euclidean distance of each one inside dataset.
-*
-*/	
+		/*
+		* Moving into Cells data and calculate euclidean distance of each one inside dataset.
+		*
+		*/	
         foreach (Database.Cell cell_values in waveListUsed)
         {
 
@@ -288,20 +379,15 @@ public class Modeler : MonoBehaviour {
 				//Debug.Log("Distance: " + distance);
 			}catch (Exception e){ Debug.LogError ("Euclidean Distance problem value: " + distance +"_" + e.ToString()); }
 
-/* Save the key for the three distance smallers values.*/
-			if (distance < smallerDistance[2]) {
-                if (distance < smallerDistance[1]){
-                    if (distance < smallerDistance[0]) {
-                        smallerDistance[0] = distance;
-                    }else {
-                        smallerDistance[1] = distance;
-                    }
-                }else {
-                    smallerDistance[2] = distance;
-                }
-            }
-			
+			/*
+			 * Save every distance for use to recovery the most upcoming.
+			 */
+			distancesValuesSort.Add(distance);
 
+
+			/*
+			 * Add the value with distance as a key.
+			 */
             try{
 
 				if(knnDic.ContainsKey(distance)){
@@ -320,28 +406,15 @@ public class Modeler : MonoBehaviour {
 				Debug.LogError(e.ToString());
 			}
         }
-	
-		Debug.Log("1-" + this.smallerDistance[0] + " , 2-" + this.smallerDistance[1] + ", 3-" + this.smallerDistance[2]);
-/*
- * Used to save players class according to neighbors and define.
- */
-		try{
-			this.modelList = new List<int>();
 
-			if(knnDic.TryGetValue(this.smallerDistance[0], out value1)){
+		/*
+		 * Sorting the distances the lower for the most. 
+		 */
+		distancesValuesSort.Sort();
 
-				foreach(Database.Cell z in value1){ modelList.Add(z.GetCellModelLevel()); } //playersClass.Add(z.GetCellModelLevel());
-	        }
+		LoadingByDistance(neighbors);
 
-			if(knnDic.TryGetValue(this.smallerDistance[1], out value2)){
-
-				foreach(Database.Cell a in value2){ modelList.Add(a.GetCellModelLevel()); } //playersClass.Add(a.GetCellModelLevel());
-	        }
-	        
-			if(knnDic.TryGetValue(this.smallerDistance[2], out value3)){
-
-				foreach(Database.Cell q in value3){ modelList.Add(q.GetCellModelLevel()); } //playersClass.Add(q.GetCellModelLevel());
-	        }
+		try{				
 
 			int v1 = 0;
 			int v2 = 0;
@@ -349,12 +422,7 @@ public class Modeler : MonoBehaviour {
 			int counter = 0;
 			int qwe = 0;
 
-			/*Confirm what and if are elements inside list.
-			 * foreach(int i in modelList){
-				Debug.Log("List Itens: " + i);
-			}*/
-
-			while(v1 < neighbors && v2 < neighbors && v3 < neighbors){
+			while(counter < neighbors){
 				try{
 					qwe = modelList.ElementAt(counter);
 					if (qwe == 0){ v1++; }
@@ -365,56 +433,24 @@ public class Modeler : MonoBehaviour {
 				}catch{
 					Debug.LogError("Houve erro a partir. " + counter);
 				}
-				//counter++;
+				counter++;
 			}
 
-			if(v1 > v2 && v1 > v3)
-            {
-                this.playerType =  "amateur" ;
-                dataUserModeler.Add(0);
-            }
-
-			else if (v2 > v1 && v2 > v3)
-            {
-                this.playerType =  "intermediate" ;
-                dataUserModeler.Add(1);
-            }
-
-			else if (v3 > v2 && v3 > v1)
-            {
-                this.playerType =  "hardcore" ;
-                dataUserModeler.Add(2);
-            }
-
-			else if (v3 == v2 && v3 == v1)
-            {
-				qwe = modelList.ElementAt(counter);
-                if (qwe == 0)
-                {
-                    this.playerType = "amateur";
-                    dataUserModeler.Add(0);
-                }
-                else if (qwe == 1)
-                {
-                    this.playerType = "intermediate";
-                    dataUserModeler.Add(1);
-                }
-                else if (qwe == 2)
-                {
-                    this.playerType = "hardcore";
-                    dataUserModeler.Add(2);
-                }
-			}
-
+			/*
+			 * Used to verify the class of player.
+			 */
+			Verify(v1,v2,v3,qwe,neighbors);
+			
 			Debug.Log("PLayer model > " + this.playerType);
-
+			
 			Debug.LogWarning(GetMajorOccurrence());
-
-            /*Cleaning to use in another execution time, it's very important!!.*/
+			
+			/*Cleaning to use in another execution time, it's very important!!.*/
             knnDic.Clear();
 			modelList.Clear();
 			waveListUsed.Clear();
 			union_PlayerAndGameStatus.Clear();
+			distancesValuesSort.Clear();
 
 		}catch(Exception e){ Debug.LogError(e.ToString()); Debug.LogError("Cannot be get value and comparated final part."); }
     }
