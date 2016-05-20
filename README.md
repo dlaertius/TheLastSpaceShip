@@ -33,4 +33,4 @@ Foram criados e implementados novos módulos que permitiram o ajuste dinâmico d
 
 <b>Keywords</b>: Player Modeling, Artificial Inteligence, Automatic adjustment of difficulty, Adaptability.
 
-Description: This game was developed using a engine Unity3D and a tutorial called Space Shooter in C#. We create some modules that give adaptativy habilities to the system. More information search for this work in scholar google. Thank you.
+Description: This game was developed using a engine Unity3D and a tutorial called Space Shooter in C#. We created some modules that give adaptativy habilities to the system. More information search for this work in scholar google. Thank you.
