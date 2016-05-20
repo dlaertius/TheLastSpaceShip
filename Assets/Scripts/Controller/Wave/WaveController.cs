@@ -129,6 +129,8 @@ public class WaveController : MonoBehaviour {
 		armasNaveBranca = naveBranca.GetComponent<Done_WeaponController>();
 		evazaoNaveBranca = naveBranca.GetComponent<Done_EvasiveManeuver>();*/
 
+		InitialStatusMobs();
+
 		localSpawnWait = game.spawnWait;
 
 	}
@@ -212,8 +214,7 @@ public class WaveController : MonoBehaviour {
 		player.speedPlayer = 10;
 		player.fireRatePlayer = 0.3f;
 	}
-
-	//Verificar se no outro jogo ele sofria mudanças e quais eram essas mudanças.
+	
 	public void JogadorBonusPorOnda () {
 		//jogador.speed += 0.5f;
 		//jogador.fireRate -= 0.01f; //Mnos e mais.
@@ -291,8 +292,8 @@ public class WaveController : MonoBehaviour {
 		velo.speed = this.speedNave_Roxa - (wave * 0.1f);
 		armas.fireRate = this.fireRateNave_Roxa - (wave * 0.05f);
 		armas.delay = this.delayNave_Roxa - (wave * 0.05f);
-		evazao.tilt = this.tiltNave_Roxa + (wave * 2.0f); 
-		evazao.dodge = this.dodgeNave_Roxa + (wave * 1.0f);
+		evazao.tilt = this.tiltNave_Roxa + (wave * 0.1f); 
+		evazao.dodge = this.dodgeNave_Roxa + (wave * 0.1f);
 						
 		Debug.LogWarning("Easy Mode!");
 	}
@@ -322,10 +323,10 @@ public class WaveController : MonoBehaviour {
 		this.velocidadeAsteroide_3.speed = this.speedAsteroide - (wave * 0.1f);
 
 		velo.speed = this.speedNave_Roxa - (wave * 0.2f);
-		armas.fireRate = this.fireRateNave_Roxa - (wave * 0.05f);
-		armas.delay = this.delayNave_Roxa - (wave * 0.05f);
-		evazao.tilt = this.tiltNave_Roxa - (wave * 0.2f); 
-		evazao.dodge = this.dodgeNave_Roxa - (wave * 0.2f);
+		armas.fireRate = this.fireRateNave_Roxa - (wave * 0.10f);
+		armas.delay = this.delayNave_Roxa - (wave * 0.10f);
+		evazao.tilt = this.tiltNave_Roxa + (wave * 0.2f); 
+		evazao.dodge = this.dodgeNave_Roxa + (wave * 0.2f);
 
 		Debug.LogWarning("MedMode!");
 	}
@@ -356,8 +357,8 @@ public class WaveController : MonoBehaviour {
 		velo.speed = this.speedNave_Vermellha - (wave * 0.3f);
 		armas.fireRate = this.fireRateNave_Vermellha - (wave * 0.15f);
 		armas.delay = this.delayNave_Vermellha - (wave * 0.15f);
-		evazao.tilt = this.tiltNave_Vermellha - (wave * 0.5f);
-		evazao.dodge = this.dodgeNave_Vermellha - (wave * 0.5f);			
+		evazao.tilt = this.tiltNave_Vermellha + (wave * 0.5f);
+		evazao.dodge = this.dodgeNave_Vermellha + (wave * 0.5f);			
 
 		Debug.LogWarning("HardMOde!");
 	}

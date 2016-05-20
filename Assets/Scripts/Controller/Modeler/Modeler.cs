@@ -95,7 +95,7 @@ public class Modeler : MonoBehaviour {
 			
 			//Debug.Log("Trigger used for Modeler.cs linha 30 to watch the waves alteration.");
 
-			if(player.GetGameMode().Equals("adapt")) KNN(5); //Use only three neighbors in this knn example.
+			if(player.GetGameMode().Equals("adapt")) KNN(5); //Use only five neighbors in this knn example.
 
             waveNumberTrigger = game.numeroDaOnda;
 
