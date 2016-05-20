@@ -32,3 +32,5 @@ Foram criados e implementados novos módulos que permitiram o ajuste dinâmico d
 <p>To conduct the experiments, a game of the genre arcade was created using a simple gameplay as a way to encourage a quick learning. Two groups of participants collaborated with the tests that had as objectives: create a database with instances of players and later test the ability of the algorithm to provide a better immersion through dynamic difficulty adjustment. Finally, the results obtained show a greater interest in Adaptive version of the game, highlighting the constant challenges and stimuli to the player, in addition to verify the accuracy of the proposed algorithm.</p>
 
 <b>Keywords</b>: Player Modeling, Artificial Inteligence, Automatic adjustment of difficulty, Adaptability.
+
+Description: This game was developed using a engine Unity3D and a tutorial called Space Shooter in C#. We create some modules that give adaptativy habilities to the system. More information search for this work in scholar google. Thank you.
