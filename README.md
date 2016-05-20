@@ -2,7 +2,7 @@
 
 <b>Título: Adaptatividade de Dificuldade para Jogos Arcade com Modelagem de Jogador</b>
 <b>Autor: Diogenes Laertius Silva de Oliveira Filho</b>
-<b> Universidade Federal de Alagoas - Campus Arapiraca - Ciência da Computação 2012.1 </br>
+<b> Universidade Federal de Alagoas - Campus Arapiraca - Ciência da Computação 2012.1 </b>
 
 <b> Palavras-Chave: </b>Inteligência Artificial, Aprendizadode Máquina, Modelagem de Jogador, Ajuste Dinâmico de Dificuldade, Adaptatividade.
 
