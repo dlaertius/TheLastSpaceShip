@@ -22,8 +22,7 @@ Foram criados e implementados novos módulos que permitiram o ajuste dinâmico d
 
 <b>Title: Difficulty Adaptivity for Arcade Games with Player Modeling</b>
 <b>Author: Diogenes Laertius Silva de Oliveira Filho</b>
-
-<b> Federal University of Alagoas - Campus Arapiraca - Computer Science 2012.1 </br>
+<b> Federal University of Alagoas - Campus Arapiraca - Computer Science 2012.1 </b>
 
 <center><b>ABSTRACT</b></center>
 <p>Over the years the games have gone on to be not only hobby for some and to others, becoming also an object of study for science. From the technological advances of the games in the years 70, the schedule of games began to include artificial intelligence techniques and complex algorithms. With the objective to improve the immersion of the games player modeling techniques combined with the machine learning are used as a means of promoting a adaptatividade of difficulty of the game every kind of player.</p>
